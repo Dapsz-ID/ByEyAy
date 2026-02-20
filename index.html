@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UI/UX Design — Materi Lengkap</title>
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0a0a0f;
+    --paper: #f5f2ec;
+    --accent: #ff4d1c;
+    --accent2: #1a3cff;
+    --muted: #6b6b7b;
+    --card: #ffffff;
+    --border: #e0dbd3;
+    --tag-bg: #fff0eb;
+    --tag-color: #ff4d1c;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 60px 60px;
+    position: relative;
+    background: var(--ink);
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -200px; right: -200px;
+    width: 700px; height: 700px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #ff4d1c33 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -150px; left: -100px;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #1a3cff22 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #ffffff15;
+    border: 1px solid #ffffff25;
+    color: #ffffffcc;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 8px 16px;
+    border-radius: 100px;
+    margin-bottom: 36px;
+    width: fit-content;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .hero-badge span { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; animation: pulse 2s infinite; }
+
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.4)} }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(52px, 8vw, 110px);
+    font-weight: 800;
+    color: #fff;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    animation: fadeUp 0.7s 0.1s ease both;
+  }
+
+  .hero h1 em { color: var(--accent); font-style: normal; }
+  .hero h1 .outline { -webkit-text-stroke: 2px #ffffff55; color: transparent; }
+
+  .hero-sub {
+    margin-top: 32px;
+    font-size: 17px;
+    color: #ffffffaa;
+    max-width: 560px;
+    line-height: 1.8;
+    animation: fadeUp 0.7s 0.2s ease both;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 48px;
+    margin-top: 56px;
+    animation: fadeUp 0.7s 0.3s ease both;
+  }
+
+  .stat-item { display: flex; flex-direction: column; gap: 4px; }
+  .stat-num { font-family: 'Syne', sans-serif; font-size: 36px; font-weight: 800; color: #fff; }
+  .stat-num span { color: var(--accent); }
+  .stat-label { font-size: 12px; color: #ffffff66; text-transform: uppercase; letter-spacing: 0.08em; }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 40px; left: 60px;
+    display: flex; align-items: center; gap: 12px;
+    color: #ffffff44;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    animation: fadeUp 0.7s 0.5s ease both;
+  }
+
+  .scroll-hint::before {
+    content: '';
+    display: block;
+    width: 40px; height: 1px;
+    background: #ffffff44;
+  }
+
+  @keyframes fadeUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+
+  /* NAV TABS */
+  .nav-tabs {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--paper);
+    border-bottom: 1px solid var(--border);
+    padding: 0 60px;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .nav-tabs a {
+    display: inline-block;
+    padding: 18px 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    text-decoration: none;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+
+  .nav-tabs a:hover { color: var(--ink); border-bottom-color: var(--ink); }
+
+  /* SECTION */
+  .section {
+    padding: 80px 60px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+    margin-bottom: 56px;
+  }
+
+  .section-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .section h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+
+  .section h2 em { color: var(--accent); font-style: normal; }
+
+  .section-desc {
+    margin-top: 12px;
+    color: var(--muted);
+    max-width: 620px;
+    font-size: 15px;
+  }
+
+  /* MATERI GRID */
+  .materi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+
+  .materi-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: transform 0.25s, box-shadow 0.25s;
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .materi-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s;
+  }
+
+  .materi-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px #0a0a0f14; }
+  .materi-card:hover::before { transform: scaleX(1); }
+
+  .materi-icon {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+  }
+
+  .materi-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+
+  .materi-card p { font-size: 13.5px; color: var(--muted); line-height: 1.7; }
+
+  .materi-topics { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+
+  .topic-tag {
+    display: inline-block;
+    padding: 3px 10px;
+    background: #f0f0f7;
+    color: #555;
+    font-size: 11px;
+    font-weight: 500;
+    border-radius: 100px;
+  }
+
+  /* TOOLS GRID */
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+  }
+
+  .tool-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: all 0.25s;
+  }
+
+  .tool-card:hover { transform: translateY(-3px); border-color: var(--accent); box-shadow: 0 8px 30px #ff4d1c12; }
+
+  .tool-header { display: flex; align-items: center; gap: 14px; }
+  .tool-logo { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; flex-shrink: 0; }
+  .tool-name { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; }
+  .tool-url { font-size: 11px; color: var(--muted); }
+
+  .tool-card p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+  .tool-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+  .tool-tag {
+    display: inline-block;
+    padding: 2px 9px;
+    border-radius: 100px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .tag-free { background: #e8f9ee; color: #1a7f3c; }
+  .tag-freemium { background: #fff8e6; color: #b45309; }
+  .tag-design { background: #eff6ff; color: #1d4ed8; }
+  .tag-proto { background: #fdf4ff; color: #7e22ce; }
+  .tag-research { background: #fff0eb; color: #c2410c; }
+  .tag-collab { background: #f0fdf4; color: #15803d; }
+  .tag-asset { background: #fefce8; color: #854d0e; }
+  .tag-dev { background: #f8fafc; color: #334155; }
+
+  /* EBOOK GRID */
+  .ebook-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+  }
+
+  .ebook-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: all 0.25s;
+  }
+
+  .ebook-card:hover { transform: translateY(-4px); box-shadow: 0 12px 36px #0a0a0f18; }
+
+  .ebook-cover {
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ebook-body { padding: 18px 20px; }
+  .ebook-body h3 { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; line-height: 1.4; margin-bottom: 6px; }
+  .ebook-body .ebook-author { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
+  .ebook-body .ebook-desc { font-size: 12px; color: var(--muted); line-height: 1.6; }
+  .ebook-footer { padding: 12px 20px 18px; display: flex; align-items: center; justify-content: space-between; }
+  .ebook-free { font-size: 11px; font-weight: 700; color: #1a7f3c; background: #e8f9ee; padding: 3px 10px; border-radius: 100px; }
+  .ebook-link { font-size: 11px; font-weight: 600; color: var(--accent); text-decoration: none; }
+  .ebook-link:hover { text-decoration: underline; }
+
+  /* ROADMAP */
+  .roadmap {
+    position: relative;
+    padding-left: 40px;
+  }
+
+  .roadmap::before {
+    content: '';
+    position: absolute;
+    left: 11px; top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent2));
+  }
+
+  .roadmap-step {
+    position: relative;
+    margin-bottom: 40px;
+  }
+
+  .roadmap-step::before {
+    content: '';
+    position: absolute;
+    left: -34px; top: 6px;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 3px solid var(--paper);
+    box-shadow: 0 0 0 2px var(--accent);
+  }
+
+  .roadmap-step h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .roadmap-step .step-badge {
+    display: inline-block;
+    padding: 3px 12px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+  }
+
+  .step-beginner { background: #e8f9ee; color: #1a7f3c; }
+  .step-intermediate { background: #fff8e6; color: #b45309; }
+  .step-advanced { background: #fdf4ff; color: #7e22ce; }
+  .step-pro { background: #fff0eb; color: #c2410c; }
+
+  .roadmap-items { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .roadmap-item {
+    padding: 6px 14px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--ink);
+  }
+
+  /* RESOURCE TABLE */
+  .resource-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .resource-table th {
+    text-align: left;
+    padding: 12px 20px;
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    border-bottom: 2px solid var(--border);
+  }
+
+  .resource-table td {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13.5px;
+    vertical-align: middle;
+  }
+
+  .resource-table tr:hover td { background: #fafafa; }
+
+  .resource-table td:first-child { font-weight: 600; color: var(--ink); }
+
+  /* ALT BG SECTION */
+  .section-dark {
+    background: var(--ink);
+    color: #fff;
+    padding: 80px 60px;
+  }
+
+  .section-dark h2 { font-family: 'Syne', sans-serif; font-size: clamp(28px, 4vw, 48px); font-weight: 800; letter-spacing: -0.02em; margin-bottom: 14px; }
+  .section-dark h2 em { color: var(--accent); font-style: normal; }
+  .section-dark p { color: #ffffffaa; font-size: 15px; }
+
+  .tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 48px;
+  }
+
+  .tip-card {
+    background: #ffffff0d;
+    border: 1px solid #ffffff15;
+    border-radius: 16px;
+    padding: 28px;
+    transition: background 0.25s;
+  }
+
+  .tip-card:hover { background: #ffffff15; }
+  .tip-card .tip-num { font-family: 'Syne', sans-serif; font-size: 40px; font-weight: 800; color: #ffffff15; line-height: 1; margin-bottom: 16px; }
+  .tip-card h3 { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; margin-bottom: 10px; }
+  .tip-card p { font-size: 13.5px; color: #ffffffaa; line-height: 1.7; }
+
+  /* FOOTER */
+  footer {
+    background: var(--ink);
+    color: #ffffffaa;
+    padding: 48px 60px;
+    border-top: 1px solid #ffffff15;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  footer .foot-brand { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; color: #fff; }
+  footer .foot-brand span { color: var(--accent); }
+  footer p { font-size: 13px; }
+
+  /* DIVIDER */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 0 60px;
+  }
+
+  @media (max-width: 768px) {
+    .hero, .section, .section-dark, footer { padding: 60px 24px; }
+    .nav-tabs { padding: 0 24px; }
+    .hero h1 { font-size: 48px; }
+    .hero-stats { gap: 28px; }
+    .divider { margin: 0 24px; }
+    .scroll-hint { left: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">
+    <span></span>
+    Materi Lengkap UI/UX Design 2025
+  </div>
+  <h1>
+    UI/<em>UX</em><br>
+    <span class="outline">Design</span><br>
+    Lengkap
+  </h1>
+  <p class="hero-sub">
+    Panduan komprehensif belajar UI/UX Design dari nol hingga profesional. Lengkap dengan 50+ free tools, ebook, roadmap, dan resource terbaik.
+  </p>
+  <div class="hero-stats">
+    <div class="stat-item">
+      <span class="stat-num">50<span>+</span></span>
+      <span class="stat-label">Free Tools</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">30<span>+</span></span>
+      <span class="stat-label">Free Ebook</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">8</span>
+      <span class="stat-label">Modul Materi</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">100<span>%</span></span>
+      <span class="stat-label">Gratis</span>
+    </div>
+  </div>
+  <div class="scroll-hint">Scroll untuk belajar</div>
+</section>
+
+<!-- NAV TABS -->
+<nav class="nav-tabs">
+  <a href="#materi">📚 Materi</a>
+  <a href="#roadmap">🗺️ Roadmap</a>
+  <a href="#tools">🔧 Free Tools</a>
+  <a href="#ebook">📖 Ebook</a>
+  <a href="#tips">💡 Tips Pro</a>
+  <a href="#komunitas">🌐 Komunitas</a>
+</nav>
+
+<!-- MATERI SECTION -->
+<section class="section" id="materi">
+  <div class="section-header">
+    <div>
+      <div class="section-num">01 — Materi Utama</div>
+      <h2>8 Modul <em>Core</em> UI/UX</h2>
+      <p class="section-desc">Kurikulum terstruktur dari dasar hingga mahir, dirancang berdasarkan kebutuhan industri saat ini.</p>
+    </div>
+  </div>
+  <div class="materi-grid">
+
+    <div class="materi-card">
+      <div class="materi-icon" style="background:#fff0eb">🎨</div>
+      <h3>Dasar-Dasar Design Thinking</h3>
+      <p>Memahami proses berpikir desainer, empathy map, How Might We, dan problem framing yang efektif.</p>
+      <div class="materi-topics">
+        <span class="topic-tag">Empathy Map</span>
+        <span class="topic-tag">Problem Statement</span>
+        <span class="topic-tag">Ideation</span>
+        <span class="topic-tag">Prototype</span>
+        <span class="topic-tag">Test</span>
+      </div>
+    </div>
+
+    <div class="materi-card">
+      <div class="materi-icon" style="background:#e8f9ee">🔍</div>
+      <h3>UX Research & User Study</h3>
+      <p>Metode riset pengguna: interview, survey, card sorting, usability testing, dan analisis data kualitatif.</p>
+      <div class="materi-topics">
+        <span class="topic-tag">User Interview</span>
+        <span class="topic-tag">Survey</span>
+        <span class="topic-tag">Usability Test</span>
+        <span class="topic-tag">Affinity Map</span>
+        <span class="topic-tag">Persona</span>
+      </div>
+    </div>
+
+    <div class="materi-card">
+      <div class="materi-icon" style="background:#eff6ff">📐</div>
+      <h3>Prinsip UI Design</h3>
+      <p>Typography, warna, grid system, whitespace, visual hierarchy, dan prinsip Gestalt dalam desain antarmuka.</p>
+      <div class="materi-topics">
+        <span class="topic-tag">Typography</span>
+        <span class="topic-tag">Color Theory</span>
+        <span class="topic-tag">Grid System</span>
+        <span class="topic-tag">Visual Hierarchy</span>
+        <span class="topic-tag">Gestalt</span>
+      </div>
+    </div>
+
+    <div class="materi-card">
+      <div class="materi-icon" style="background:#fdf4ff">🗺️</div>
+      <h3>Information Architecture</h3>
+      <p>Cara mengorganisasi konten, membuat sitemap, user flow, dan navigation pattern yang intuitif.</p>
+      <div class="materi-topics">
+        <span class="topic-tag">Sitemap</span>
+        <span class="topic-tag">User Flow</span>
+        <span class="topic-tag">Card Sorting</span>
+        <span class="topic-tag">Tree Testing</span>
+      </div>
+    </div>
+
+    <div class="materi-card">
+      <div class="materi-icon" style="background:#fefce8">⬜</div>
+      <h3>Wireframing & Prototyping</h3>
+      <p>Teknik membuat wireframe low/mid/high fidelity, interactive prototype, dan micro-interaction.</p>
+      <div class="materi-topics">
+        <span class="topic-tag">Low-Fi Wireframe</span>
+        <span class="topic-tag">High-Fi Prototype</span>
+        <span class="topic-tag">Interaction</span>
+        <span class="topic-tag">Animation</span>
+      </div>
+    </div>
+
+    <div class="materi-card">
+      <div class="materi-icon" style="background:#fff0eb">🧩</div>
+      <h3>Design System & Component</h3>
+      <p>Membangun atomic design, design tokens, component library, dan style guide yang konsisten dan scalable.</p>
+      <div class="materi-topics">
+        <span class="topic-tag">Atomic Design</span>
+        <span class="topic-tag">Design Tokens</span>
+        <span class="topic-tag">Component Lib</span>
+        <span class="topic-tag">Style Guide</span>
+      </div>
+    </div>
+
+    <div class="materi-card">
+      <div class="materi-icon" style="background:#e8f9ee">♿</div>
+      <h3>Aksesibilitas & Inklusi</h3>
+      <p>Standar WCAG, contrast ratio, screen reader, keyboard navigation, dan desain inklusif untuk semua.</p>
+      <div class="materi-topics">
+        <span class="topic-tag">WCAG 2.1</span>
+        <span class="topic-tag">Contrast Ratio</span>
+        <span class="topic-tag">Screen Reader</span>
+        <span class="topic-tag">ARIA Labels</span>
+      </div>
+    </div>
+
+    <div class="materi-card">
+      <div class="materi-icon" style="background:#eff6ff">📊</div>
+      <h3>UX Metrics & Analytics</h3>
+      <p>Mengukur keberhasilan desain: HEART Framework, NPS, CSAT, task success rate, dan A/B testing.</p>
+      <div class="materi-topics">
+        <span class="topic-tag">HEART Framework</span>
+        <span class="topic-tag">NPS & CSAT</span>
+        <span class="topic-tag">A/B Testing</span>
+        <span class="topic-tag">Heatmap</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ROADMAP -->
+<section class="section" id="roadmap">
+  <div class="section-header">
+    <div>
+      <div class="section-num">02 — Learning Path</div>
+      <h2>Roadmap <em>Belajar</em> UI/UX</h2>
+      <p class="section-desc">Jalur belajar terstruktur dari pemula hingga profesional siap kerja.</p>
+    </div>
+  </div>
+  <div class="roadmap">
+
+    <div class="roadmap-step">
+      <span class="step-badge step-beginner">Fase 1 — Pemula (0-3 Bulan)</span>
+      <h3>Fondasi & Mindset</h3>
+      <p style="color:var(--muted);font-size:14px">Bangun pemahaman dasar tentang UX, desain visual, dan tool utama.</p>
+      <div class="roadmap-items">
+        <span class="roadmap-item">Belajar Design Thinking</span>
+        <span class="roadmap-item">Dasar Figma / Penpot</span>
+        <span class="roadmap-item">Prinsip UI Design</span>
+        <span class="roadmap-item">Typography & Warna</span>
+        <span class="roadmap-item">User Persona</span>
+        <span class="roadmap-item">Buat Wireframe Pertama</span>
+        <span class="roadmap-item">Ikuti Daily UI Challenge</span>
+      </div>
+    </div>
+
+    <div class="roadmap-step">
+      <span class="step-badge step-intermediate">Fase 2 — Dasar (3-6 Bulan)</span>
+      <h3>UX Research & Prototyping</h3>
+      <p style="color:var(--muted);font-size:14px">Mulai riset pengguna nyata dan bangun prototype interaktif.</p>
+      <div class="roadmap-items">
+        <span class="roadmap-item">User Interview</span>
+        <span class="roadmap-item">Affinity Mapping</span>
+        <span class="roadmap-item">User Journey Map</span>
+        <span class="roadmap-item">Interactive Prototype</span>
+        <span class="roadmap-item">Usability Testing</span>
+        <span class="roadmap-item">Information Architecture</span>
+        <span class="roadmap-item">Redesign Challenge</span>
+      </div>
+    </div>
+
+    <div class="roadmap-step">
+      <span class="step-badge step-advanced">Fase 3 — Menengah (6-12 Bulan)</span>
+      <h3>Design System & Portfolio</h3>
+      <p style="color:var(--muted);font-size:14px">Bangun sistem desain dan kumpulkan 3-5 case study berkualitas.</p>
+      <div class="roadmap-items">
+        <span class="roadmap-item">Atomic Design</span>
+        <span class="roadmap-item">Design System</span>
+        <span class="roadmap-item">Micro-Interaction</span>
+        <span class="roadmap-item">Accessibility WCAG</span>
+        <span class="roadmap-item">3 Case Study</span>
+        <span class="roadmap-item">Behance / Dribbble</span>
+        <span class="roadmap-item">Portfolio Website</span>
+      </div>
+    </div>
+
+    <div class="roadmap-step">
+      <span class="step-badge step-pro">Fase 4 — Profesional (12 Bulan+)</span>
+      <h3>Spesialisasi & Karier</h3>
+      <p style="color:var(--muted);font-size:14px">Tentukan jalur spesialisasi dan mulai lamar pekerjaan atau freelance.</p>
+      <div class="roadmap-items">
+        <span class="roadmap-item">Product Design</span>
+        <span class="roadmap-item">UX Strategy</span>
+        <span class="roadmap-item">Motion Design</span>
+        <span class="roadmap-item">A/B Testing</span>
+        <span class="roadmap-item">Design Leadership</span>
+        <span class="roadmap-item">Lamar Pekerjaan</span>
+        <span class="roadmap-item">Freelance Project</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TOOLS SECTION -->
+<section class="section" id="tools">
+  <div class="section-header">
+    <div>
+      <div class="section-num">03 — Free Tools</div>
+      <h2>50+ <em>Tools</em> Gratis</h2>
+      <p class="section-desc">Semua alat yang dibutuhkan desainer profesional, tersedia gratis atau freemium.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;font-weight:700;margin-bottom:20px;font-size:18px">🎨 Design & Prototyping</h3>
+  <div class="tools-grid" style="margin-bottom:48px">
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-logo" style="background:#1c1c1c;color:#fff">F</div>
+        <div><div class="tool-name">Figma</div><div class="tool-url">figma.com</div></div>
+      </div>
+      <p>Tool desain UI/UX #1 dunia. Kolaborasi real-time, prototyping, dan design system dalam satu platform.</p>
+      <div class="tool-tags"><span class="tool-tag tag-freemium">Freemium</span><span class="tool-tag tag-design">Design</span><span class="tool-tag tag-proto">Proto</span><span class="tool-tag tag-collab">Collab</span></div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-logo" style="background:#5c7cfa;color:#fff">P</div>
+        <div><div class="tool-name">Penpot</div><div class="tool-url">penpot.app</div></div>
+      </div>
+      <p>Alternatif Figma open-source 100% gratis. Berbasis web, self-hosted, mendukung SVG standar.</p>
+      <div class="tool-tags"><span class="tool-tag tag-free">Free</span><span class="tool-tag tag-design">Design</span><span class="tool-tag tag-proto">Proto</span></div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-logo" style="background:#ff4154;color:#fff">Fr</div>
+        <div><div class="tool-name">Framer</div><div class="tool-url">framer.com</div></div>
+      </div>
+      <p>Platform desain + publish website dengan animasi canggih dan interaksi tingkat lanjut.</p>
+      <div class="tool-tags"><span class="tool-tag tag-freemium">Freemium</span><span class="tool-tag tag-proto">Proto</span><span class="tool-tag tag-design">Design</span></div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-logo" style="background:#ff7262;color:#fff">Xd</div>
+        <div><div class="tool-name">Adobe XD</div><div class="tool-url">adobe.com/xd</div></div>
+      </div>
+      <p>Tool desain dan prototyping dari Adobe dengan fitur voice prototype dan auto-animate.</p>
+      <div class="tool-tags"><span class="tool-tag tag-freemium">Freemium</span><span class="tool-tag tag-design">Design</span><span class="tool-tag tag-proto">Proto</span></div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-logo" style="background:#000;color:#fff">Sk</div>
+        <div><div class="tool-name">Sketch</div><div class="tool-url">sketch.com</div></div>
+      </div>
+      <p>Tool desain UI klasik untuk macOS dengan ekosistem plugin yang kaya dan design system.</p>
+      <div class="tool-tags"><span class="tool-tag tag-freemium">Freemium</span><span class="tool-tag tag-design">Design</span></div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-logo" style="background:#6e56cf;color:#fff">Pl</div>
+        <div><div class="tool-name">Plasmic</div><div class="tool-url">plasmic.app</div></div>
+      </div>
+      <p>Visual builder untuk React, dengan kemampuan design ke code secara otomatis.</p>
+      <div class="tool-tags"><span class="tool-tag tag-freemium">Freemium</span><span class="tool-tag tag-design">Design</span><span class="tool-tag tag-dev">Dev</span></div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-logo" style="background:#e8f0fe;color:#1a73e8">Ln</div>
+        <div><div class="tool-name">Lunacy</div><div class="tool-url">icons8.com/lunacy</div></div>
+      </div>
+      <p>Tool desain gratis offline Windows/Mac/Linux. Compatible dengan file Sketch. Built-in AI tools.</p>
+      <div class="tool-tags"><span class="tool-tag tag-free">Free</span><span class="tool-tag tag-design">Design</span></div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-logo" style="background:#0acf83;color:#fff">M</div>
+        <div><div class="tool-name">Marvel App</div><div class="tool-url">marvelapp.com</div></div>
+      </div>
+      <p>Prototyping cepat dari sketch dan Figma, dengan user testing langsung di platform.</p>
+      <div class="tool-tags"><span class="tool-tag tag-freemium">Freemium</span><span class="tool-tag tag-proto">Proto</span></div>
+    </div>
+
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;font-weight:700;margin-bottom:20px;font-size:18px">🔍 UX Research Tools</h3>
+  <div class="tools-grid" style="margin-bottom:48px">
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-logo" style="background:#f5a623;color:#fff">Mt</div>
+        <div><div class="tool-name">Maze</div><div class="tool-url">maze.co</div></div>
+      </div>
+      <p>Riset UX terautomasi. Usability test, tree testing, card sorting, dan survey dalam satu tool.</p>
+      <div class="tool-tags"><span class="tool-tag tag-freemium">Freemium</span><span class="tool-tag tag-research">Research</span></div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-logo" style="background:#2c5282;color:#fff">Hj</div>
+        <div><div class="tool-name">Hotjar</div><div class="tool-url">hotjar.com</div></div>
+      </div>
+      <p>Heatmap, session recording, dan feedback tools untuk memahami perilaku pengguna nyata.</p>
+      <div class="tool-tags"><span class="tool-tag tag-freemium">Freemium</span><span class="tool-tag tag-research">Research</span></div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-logo" style="background:#f55f5f;color:#fff">Ut</div>
+        <div><div class="tool-name">UsabilityHub</div><div class="tool-url">usabilityhub.com</div></div>
+      </div>
+      <p>Platform tes desain cepat: five second test, click test, navigation test, dan preference test.</p>
+      <div class="tool-tags"><span class="tool-tag tag-freemium">Freemium</span><span class="tool-tag tag-research">Research</span></div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-logo" style="background:#4a5568;color:#fff">Op</div>
+        <div><div class="tool-name">Optimal Workshop</div><div class="tool-url">optimalworkshop.com</div></div>
+      </div>
+      <p>Suite riset IA: card sorting, tree testing, first click test, dan user survey.</p>
+      <div class="tool-tags"><span class="tool-tag tag-freemium">Freemium</span><span class="tool-tag tag-research">Research</span></div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-logo" style="background:#3182ce;color:#fff">Ty</div>
+        <div><div class="tool-name">Typeform</div><div class="tool-url">typeform.com</div></div>
+      </div>
+      <p>Form dan survey interaktif dengan UX yang sangat baik, cocok untuk user research.</p>
+      <div class="tool-tags"><span class="tool-tag tag-freemium">Freemium</span><span class="tool-tag tag-research">Research</span></div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-logo" style="background:#00b2a9;color:#fff">Do</div>
+        <div><div class="tool-name">Dovetail</div><div class="tool-url">dovetailapp.com</div></div>
+      </div>
+      <p>Repositori riset UX, analisis interview, tag insight, dan kolaborasi tim research.</p>
+      <div class="tool-tags"><span class="tool-tag tag-freemium">Freemium</span><span class="tool-tag tag-research">Research</span><span class="tool-tag tag-collab">Collab</span></div>
+    </div>
+
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;font-weight:700;margin-bottom:20px;font-size:18px">🖼️ Asset & Resource Gratis</h3>
+  <div class="tools-grid" style="margin-bottom:48px">
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-logo" style="background:#18181b;color:#fff">Un</div>
+        <div><div class="tool-name">Unsplash</div><div class="tool-url">unsplash.com</div></div>
+      </div>
+      <p>100.000+ foto berkualitas tinggi bebas lisensi untuk mockup dan prototype.</p>
+      <div class="tool-tags"><span class="tool-tag tag-free">Free</span><span class="tool-tag tag-asset">Asset</span></div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-logo" style="background:#ff6584;color:#fff">Fk</div>
+        <div><div class="tool-name">Freepik</div><div class="tool-url">freepik.com</div></div>
+      </div>
+      <p>Jutaan ilustrasi, vector, icon, dan mockup gratis untuk kebutuhan desain.</p>
+      <div class="tool-tags"><span class="tool-tag tag-freemium">Freemium</span><span class="tool-tag tag-asset">Asset</span></div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-logo" style="background:#6c63ff;color:#fff">Ic</div>
+        <div><div class="tool-name">Iconify</div><div class="tool-url">iconify.design</div></div>
+      </div>
+      <p>200.000+ icon dari 100+ set icon populer dalam satu library terintegrasi Figma.</p>
+      <div class="tool-tags"><span class="tool-tag tag-free">Free</span><span class="tool-tag tag-asset">Asset</span></div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-logo" style="background:#00d2d3;color:#fff">Gf</div>
+        <div><div class="tool-name">Google Fonts</div><div class="tool-url">fonts.google.com</div></div>
+      </div>
+      <p>1500+ font gratis berkualitas tinggi untuk web dan desain. Mudah dipakai di Figma.</p>
+      <div class="tool-tags"><span class="tool-tag tag-free">Free</span><span class="tool-tag tag-asset">Asset</span></div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-logo" style="background:#ff6b6b;color:#fff">Lo</div>
+        <div><div class="tool-name">Lottie Files</div><div class="tool-url">lottiefiles.com</div></div>
+      </div>
+      <p>Library animasi Lottie gratis untuk prototype dan implementasi micro-interaction.</p>
+      <div class="tool-tags"><span class="tool-tag tag-freemium">Freemium</span><span class="tool-tag tag-asset">Asset</span></div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-logo" style="background:#4ecdc4;color:#fff">Ui</div>
+        <div><div class="tool-name">UI8</div><div class="tool-url">ui8.net</div></div>
+      </div>
+      <p>Marketplace resource UI/UX dengan banyak item freemium berkualitas premium.</p>
+      <div class="tool-tags"><span class="tool-tag tag-freemium">Freemium</span><span class="tool-tag tag-asset">Asset</span></div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-logo" style="background:#000;color:#fff">Nw</div>
+        <div><div class="tool-name">Noun Project</div><div class="tool-url">thenounproject.com</div></div>
+      </div>
+      <p>5 juta icon dan simbol dari desainer seluruh dunia. Free dengan atribusi.</p>
+      <div class="tool-tags"><span class="tool-tag tag-freemium">Freemium</span><span class="tool-tag tag-asset">Asset</span></div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-logo" style="background:#e9ecef;color:#495057">Cp</div>
+        <div><div class="tool-name">Coolors</div><div class="tool-url">coolors.co</div></div>
+      </div>
+      <p>Generator palet warna super cepat dengan export ke berbagai format. Gratis!</p>
+      <div class="tool-tags"><span class="tool-tag tag-free">Free</span><span class="tool-tag tag-asset">Asset</span></div>
+    </div>
+
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;font-weight:700;margin-bottom:20px;font-size:18px">🤝 Kolaborasi & Whiteboard</h3>
+  <div class="tools-grid" style="margin-bottom:48px">
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-logo" style="background:#f97316;color:#fff">Mj</div>
+        <div><div class="tool-name">Miro</div><div class="tool-url">miro.com</div></div>
+      </div>
+      <p>Infinite canvas untuk brainstorm, affinity map, user journey, dan workshop remote.</p>
+      <div class="tool-tags"><span class="tool-tag tag-freemium">Freemium</span><span class="tool-tag tag-collab">Collab</span></div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-logo" style="background:#6e40c9;color:#fff">Fn</div>
+        <div><div class="tool-name">FigJam</div><div class="tool-url">figma.com/figjam</div></div>
+      </div>
+      <p>Whiteboard kolaboratif dari Figma. Stickies, diagram, voting, timer, dan template siap pakai.</p>
+      <div class="tool-tags"><span class="tool-tag tag-freemium">Freemium</span><span class="tool-tag tag-collab">Collab</span></div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-logo" style="background:#0f62fe;color:#fff">Mu</div>
+        <div><div class="tool-name">Mural</div><div class="tool-url">mural.co</div></div>
+      </div>
+      <p>Digital workspace untuk design sprint, retrospective, dan workshop tim terdistribusi.</p>
+      <div class="tool-tags"><span class="tool-tag tag-freemium">Freemium</span><span class="tool-tag tag-collab">Collab</span></div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-logo" style="background:#00c2a8;color:#fff">Nt</div>
+        <div><div class="tool-name">Notion</div><div class="tool-url">notion.so</div></div>
+      </div>
+      <p>All-in-one workspace untuk dokumentasi riset, design brief, dan kolaborasi tim produk.</p>
+      <div class="tool-tags"><span class="tool-tag tag-freemium">Freemium</span><span class="tool-tag tag-collab">Collab</span></div>
+    </div>
+
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;font-weight:700;margin-bottom:20px;font-size:18px">⚡ AI Tools untuk Desainer</h3>
+  <div class="tools-grid">
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-logo" style="background:#10a37f;color:#fff">Ai</div>
+        <div><div class="tool-name">ChatGPT / Claude</div><div class="tool-url">chat.openai.com</div></div>
+      </div>
+      <p>AI untuk brainstorm copy, riset, user stories, dan analisis feedback pengguna.</p>
+      <div class="tool-tags"><span class="tool-tag tag-freemium">Freemium</span></div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-logo" style="background:#6c63ff;color:#fff">Ux</div>
+        <div><div class="tool-name">UX Pilot</div><div class="tool-url">uxpilot.ai</div></div>
+      </div>
+      <p>AI generator wireframe dan UI dari deskripsi teks. Bantu percepat proses ideasi awal.</p>
+      <div class="tool-tags"><span class="tool-tag tag-freemium">Freemium</span></div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-logo" style="background:#ff4d4f;color:#fff">Ga</div>
+        <div><div class="tool-name">Galileo AI</div><div class="tool-url">usegalileo.ai</div></div>
+      </div>
+      <p>Generate UI design dari prompt teks, lalu import ke Figma untuk diedit lebih lanjut.</p>
+      <div class="tool-tags"><span class="tool-tag tag-freemium">Freemium</span></div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-logo" style="background:#f59e0b;color:#fff">Mi</div>
+        <div><div class="tool-name">Midjourney</div><div class="tool-url">midjourney.com</div></div>
+      </div>
+      <p>Generate visual concept, moodboard, dan ilustrasi berkualitas tinggi untuk desain.</p>
+      <div class="tool-tags"><span class="tool-tag tag-freemium">Freemium</span></div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-logo" style="background:#7c3aed;color:#fff">Rs</div>
+        <div><div class="tool-name">Relume</div><div class="tool-url">relume.io</div></div>
+      </div>
+      <p>AI sitemap dan wireframe builder untuk website, export langsung ke Figma.</p>
+      <div class="tool-tags"><span class="tool-tag tag-freemium">Freemium</span></div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-logo" style="background:#0ea5e9;color:#fff">Ax</div>
+        <div><div class="tool-name">Attention Insight</div><div class="tool-url">attentioninsight.com</div></div>
+      </div>
+      <p>AI prediksi attention heatmap sebelum desain diuji ke pengguna nyata.</p>
+      <div class="tool-tags"><span class="tool-tag tag-freemium">Freemium</span></div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- EBOOK SECTION -->
+<section class="section" id="ebook">
+  <div class="section-header">
+    <div>
+      <div class="section-num">04 — Free Ebook</div>
+      <h2>30+ <em>Ebook</em> Gratis</h2>
+      <p class="section-desc">Kumpulan buku, panduan, dan resource bacaan terbaik untuk desainer UI/UX — semua gratis.</p>
+    </div>
+  </div>
+  <div class="ebook-grid">
+
+    <div class="ebook-card">
+      <div class="ebook-cover" style="background:#1a1a2e">📐</div>
+      <div class="ebook-body">
+        <h3>Don't Make Me Think</h3>
+        <div class="ebook-author">Steve Krug</div>
+        <div class="ebook-desc">Panduan usability web terbaik, dijelaskan dengan ringan dan penuh ilustrasi.</div>
+      </div>
+      <div class="ebook-footer">
+        <span class="ebook-free">Summary Free</span>
+        <a class="ebook-link" href="https://www.google.com/books/edition/Don_t_Make_Me_Think_Revisited/QlltKwEACAAJ" target="_blank">Baca →</a>
+      </div>
+    </div>
+
+    <div class="ebook-card">
+      <div class="ebook-cover" style="background:#2d1b69">🧠</div>
+      <div class="ebook-body">
+        <h3>The Design of Everyday Things</h3>
+        <div class="ebook-author">Don Norman</div>
+        <div class="ebook-desc">Buku klasik tentang psikologi desain dan bagaimana manusia berinteraksi dengan objek.</div>
+      </div>
+      <div class="ebook-footer">
+        <span class="ebook-free">Summary Free</span>
+        <a class="ebook-link" href="https://www.basicbooks.com/titles/don-norman/the-design-of-everyday-things/9780465050659/" target="_blank">Info →</a>
+      </div>
+    </div>
+
+    <div class="ebook-card">
+      <div class="ebook-cover" style="background:#0d3349">💬</div>
+      <div class="ebook-body">
+        <h3>Refactoring UI</h3>
+        <div class="ebook-author">Adam Wathan & Steve Schoger</div>
+        <div class="ebook-desc">Panduan praktis memperbaiki tampilan UI, ditulis oleh pencipta Tailwind CSS.</div>
+      </div>
+      <div class="ebook-footer">
+        <span class="ebook-free">Tips Free</span>
+        <a class="ebook-link" href="https://refactoringui.com" target="_blank">Baca →</a>
+      </div>
+    </div>
+
+    <div class="ebook-card">
+      <div class="ebook-cover" style="background:#2c3e50">📖</div>
+      <div class="ebook-body">
+        <h3>UX Design Process Guide</h3>
+        <div class="ebook-author">Nielsen Norman Group</div>
+        <div class="ebook-desc">Panduan lengkap proses desain UX dari riset hingga launch dari lembaga riset UX terkemuka.</div>
+      </div>
+      <div class="ebook-footer">
+        <span class="ebook-free">Free</span>
+        <a class="ebook-link" href="https://www.nngroup.com/reports/" target="_blank">Download →</a>
+      </div>
+    </div>
+
+    <div class="ebook-card">
+      <div class="ebook-cover" style="background:#1b4332">🌿</div>
+      <div class="ebook-body">
+        <h3>Google UX Design Guide</h3>
+        <div class="ebook-author">Google Design</div>
+        <div class="ebook-desc">Resource resmi dari Google tentang Material Design dan best practice UX.</div>
+      </div>
+      <div class="ebook-footer">
+        <span class="ebook-free">Free</span>
+        <a class="ebook-link" href="https://design.google" target="_blank">Baca →</a>
+      </div>
+    </div>
+
+    <div class="ebook-card">
+      <div class="ebook-cover" style="background:#78350f">🔥</div>
+      <div class="ebook-body">
+        <h3>Sprint</h3>
+        <div class="ebook-author">Jake Knapp (Google Ventures)</div>
+        <div class="ebook-desc">Metodologi Design Sprint 5 hari untuk memecahkan masalah besar dan validate solusi cepat.</div>
+      </div>
+      <div class="ebook-footer">
+        <span class="ebook-free">Intro Free</span>
+        <a class="ebook-link" href="https://www.thesprintbook.com" target="_blank">Info →</a>
+      </div>
+    </div>
+
+    <div class="ebook-card">
+      <div class="ebook-cover" style="background:#1e3a5f">🌊</div>
+      <div class="ebook-body">
+        <h3>Laws of UX</h3>
+        <div class="ebook-author">Jon Yablonski</div>
+        <div class="ebook-desc">Kumpulan hukum psikologi dan kognitif yang diaplikasikan dalam desain UX modern.</div>
+      </div>
+      <div class="ebook-footer">
+        <span class="ebook-free">Website Free</span>
+        <a class="ebook-link" href="https://lawsofux.com" target="_blank">Baca →</a>
+      </div>
+    </div>
+
+    <div class="ebook-card">
+      <div class="ebook-cover" style="background:#4a044e">💎</div>
+      <div class="ebook-body">
+        <h3>UX Strategy</h3>
+        <div class="ebook-author">Jaime Levy</div>
+        <div class="ebook-desc">Cara menghubungkan desain UX dengan strategi bisnis yang menghasilkan produk sukses.</div>
+      </div>
+      <div class="ebook-footer">
+        <span class="ebook-free">Chapter Free</span>
+        <a class="ebook-link" href="https://www.oreilly.com/library/view/ux-strategy-2nd/9781492052425/" target="_blank">Info →</a>
+      </div>
+    </div>
+
+    <div class="ebook-card">
+      <div class="ebook-cover" style="background:#0c4a6e">🚀</div>
+      <div class="ebook-body">
+        <h3>Human Interface Guidelines</h3>
+        <div class="ebook-author">Apple Design</div>
+        <div class="ebook-desc">Standar resmi desain Apple untuk iOS, macOS, dan semua platform ekosistem Apple.</div>
+      </div>
+      <div class="ebook-footer">
+        <span class="ebook-free">Free</span>
+        <a class="ebook-link" href="https://developer.apple.com/design/human-interface-guidelines/" target="_blank">Baca →</a>
+      </div>
+    </div>
+
+    <div class="ebook-card">
+      <div class="ebook-cover" style="background:#064e3b">📱</div>
+      <div class="ebook-body">
+        <h3>Material Design 3</h3>
+        <div class="ebook-author">Google Material</div>
+        <div class="ebook-desc">Sistem desain komprehensif Google untuk Android dan web. Panduan, komponen, token.</div>
+      </div>
+      <div class="ebook-footer">
+        <span class="ebook-free">Free</span>
+        <a class="ebook-link" href="https://m3.material.io" target="_blank">Baca →</a>
+      </div>
+    </div>
+
+    <div class="ebook-card">
+      <div class="ebook-cover" style="background:#4c1d95">✨</div>
+      <div class="ebook-body">
+        <h3>Figma Best Practices</h3>
+        <div class="ebook-author">Figma</div>
+        <div class="ebook-desc">Panduan resmi Figma tentang auto layout, component, variable, dan design system.</div>
+      </div>
+      <div class="ebook-footer">
+        <span class="ebook-free">Free</span>
+        <a class="ebook-link" href="https://help.figma.com/hc/en-us" target="_blank">Baca →</a>
+      </div>
+    </div>
+
+    <div class="ebook-card">
+      <div class="ebook-cover" style="background:#14532d">💡</div>
+      <div class="ebook-body">
+        <h3>The User Experience Team of One</h3>
+        <div class="ebook-author">Leah Buley</div>
+        <div class="ebook-desc">Panduan praktis UX designer solo dalam organisasi yang belum UX-mature.</div>
+      </div>
+      <div class="ebook-footer">
+        <span class="ebook-free">Summary Free</span>
+        <a class="ebook-link" href="https://rosenfeldmedia.com/books/the-user-experience-team-of-one/" target="_blank">Info →</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- TABEL RESOURCE TAMBAHAN -->
+  <div style="margin-top:56px">
+    <h3 style="font-family:'Syne',sans-serif;font-weight:700;margin-bottom:24px;font-size:20px">📋 Resource Online Gratis Lainnya</h3>
+    <div style="overflow-x:auto;border-radius:16px;border:1px solid var(--border)">
+      <table class="resource-table">
+        <thead>
+          <tr>
+            <th>Nama Resource</th>
+            <th>Kategori</th>
+            <th>Platform</th>
+            <th>URL</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Nielsen Norman Group Articles</td><td>UX Research</td><td>Website</td><td style="color:var(--accent2)">nngroup.com/articles</td></tr>
+          <tr><td>Interaction Design Foundation</td><td>Kursus UX</td><td>E-learning</td><td style="color:var(--accent2)">interaction-design.org</td></tr>
+          <tr><td>UX Collective</td><td>Blog & Artikel</td><td>Medium/Website</td><td style="color:var(--accent2)">uxdesign.cc</td></tr>
+          <tr><td>Smashing Magazine UX</td><td>Tutorial & Artikel</td><td>Website</td><td style="color:var(--accent2)">smashingmagazine.com</td></tr>
+          <tr><td>UX Planet</td><td>Artikel & Tutorial</td><td>Medium</td><td style="color:var(--accent2)">uxplanet.org</td></tr>
+          <tr><td>Google Design Blog</td><td>Insightful Articles</td><td>Website</td><td style="color:var(--accent2)">design.google/library</td></tr>
+          <tr><td>A List Apart</td><td>Web Design</td><td>Website</td><td style="color:var(--accent2)">alistapart.com</td></tr>
+          <tr><td>UX Matters</td><td>UX Professional</td><td>Website</td><td style="color:var(--accent2)">uxmatters.com</td></tr>
+          <tr><td>Figma Community</td><td>Template & Plugin</td><td>Figma</td><td style="color:var(--accent2)">figma.com/community</td></tr>
+          <tr><td>Dribbble</td><td>Inspirasi & Portfolio</td><td>Website</td><td style="color:var(--accent2)">dribbble.com</td></tr>
+          <tr><td>Behance</td><td>Case Study</td><td>Website</td><td style="color:var(--accent2)">behance.net</td></tr>
+          <tr><td>Awwwards</td><td>Web Design Inspirasi</td><td>Website</td><td style="color:var(--accent2)">awwwards.com</td></tr>
+          <tr><td>Product Design Weekly</td><td>Newsletter</td><td>Email</td><td style="color:var(--accent2)">productdesignweekly.com</td></tr>
+          <tr><td>UX Coffee Podcast</td><td>Podcast Indonesia</td><td>Spotify/Podcast</td><td style="color:var(--accent2)">uxcoffee.co.id</td></tr>
+          <tr><td>Growth.Design</td><td>Case Study Interaktif</td><td>Website</td><td style="color:var(--accent2)">growth.design</td></tr>
+          <tr><td>Checklist Design</td><td>Best Practice UI</td><td>Website</td><td style="color:var(--accent2)">checklist.design</td></tr>
+          <tr><td>UI Patterns</td><td>Pattern Library</td><td>Website</td><td style="color:var(--accent2)">ui-patterns.com</td></tr>
+          <tr><td>Mobbin</td><td>Mobile UI Reference</td><td>Website</td><td style="color:var(--accent2)">mobbin.com</td></tr>
+          <tr><td>Pageflows</td><td>User Flow Referensi</td><td>Website</td><td style="color:var(--accent2)">pageflows.com</td></tr>
+          <tr><td>Really Good UX</td><td>UX Inspirasi</td><td>Website</td><td style="color:var(--accent2)">reallygoodux.io</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- TIPS PRO SECTION -->
+<section class="section-dark" id="tips">
+  <div style="max-width:900px">
+    <div style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;color:var(--accent);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:16px">05 — Tips Profesional</div>
+    <h2>Jadi <em>Desainer</em> Pro<br>Lebih Cepat</h2>
+    <p>10 prinsip yang digunakan desainer senior untuk menghasilkan pekerjaan berkualitas tinggi secara konsisten.</p>
+  </div>
+  <div class="tips-grid">
+
+    <div class="tip-card">
+      <div class="tip-num">01</div>
+      <h3>Riset Dulu, Desain Kemudian</h3>
+      <p>Jangan pernah langsung membuka Figma tanpa memahami pengguna dan masalahnya. Riset 1 jam bisa menghemat revisi berminggu-minggu.</p>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-num">02</div>
+      <h3>Mulai dari Lo-Fi</h3>
+      <p>Wireframe kasar dengan pen dan kertas lebih cepat untuk iterasi daripada langsung high fidelity. Save detail untuk akhir.</p>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-num">03</div>
+      <h3>Test Awal & Sering</h3>
+      <p>Uji ke pengguna nyata sesegera mungkin, bahkan dengan prototype kasar. Feedback awal 10x lebih berharga dari feedback terlambat.</p>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-num">04</div>
+      <h3>Design for Extremes</h3>
+      <p>Desain untuk pengguna dengan kebutuhan ekstrem (manula, disabilitas, pemula, stress) akan membuat produk lebih baik untuk semua.</p>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-num">05</div>
+      <h3>Dokumentasikan Keputusan</h3>
+      <p>Catat MENGAPA sebuah keputusan desain dibuat. Dokumentasi ini akan menyelamatkan kamu di meeting dengan stakeholder.</p>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-num">06</div>
+      <h3>Consistency is King</h3>
+      <p>Konsistensi visual dan interaksi mengurangi cognitive load pengguna. Buat dan patuhi design system sejak awal.</p>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-num">07</div>
+      <h3>Data + Intuisi</h3>
+      <p>Keputusan desain terbaik datang dari kombinasi data kuantitatif (analytics) dan kualitatif (interview). Jangan andalkan salah satu saja.</p>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-num">08</div>
+      <h3>Pelajari Kode Dasar</h3>
+      <p>Desainer yang paham HTML/CSS & React bisa berkomunikasi lebih efektif dengan developer dan membuat desain yang feasible.</p>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-num">09</div>
+      <h3>Portfolio = Case Study</h3>
+      <p>Portfolio terbaik bukan kumpulan screenshot UI cantik, tapi case study yang menceritakan proses dari masalah hingga solusi.</p>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-num">10</div>
+      <h3>Feedback adalah Hadiah</h3>
+      <p>Desainer terbaik adalah yang paling terbuka terhadap kritik. Pisahkan ego dari pekerjaan, dan selalu tanya "mengapa".</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- KOMUNITAS -->
+<section class="section" id="komunitas">
+  <div class="section-header">
+    <div>
+      <div class="section-num">06 — Komunitas</div>
+      <h2>Bergabung <em>Komunitas</em></h2>
+      <p class="section-desc">Belajar lebih cepat bersama komunitas desainer. Networking, mentoring, dan feedback gratis.</p>
+    </div>
+  </div>
+  <div class="tools-grid">
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-logo" style="background:#5865f2;color:#fff">Dc</div>
+        <div><div class="tool-name">Figma Indonesia</div><div class="tool-url">Discord</div></div>
+      </div>
+      <p>Komunitas desainer Indonesia terbesar di Discord. Sharing, tanya jawab, dan kolaborasi.</p>
+      <div class="tool-tags"><span class="tool-tag tag-free">Free</span><span class="tool-tag tag-collab">Komunitas</span></div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-logo" style="background:#e1306c;color:#fff">Ig</div>
+        <div><div class="tool-name">UX Indonesia</div><div class="tool-url">Instagram/Telegram</div></div>
+      </div>
+      <p>Komunitas UX Designer Indonesia dengan event rutin, webinar, dan mentoring session.</p>
+      <div class="tool-tags"><span class="tool-tag tag-free">Free</span><span class="tool-tag tag-collab">Komunitas</span></div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-logo" style="background:#0077b5;color:#fff">Li</div>
+        <div><div class="tool-name">ADPList</div><div class="tool-url">adplist.org</div></div>
+      </div>
+      <p>Platform mentoring gratis dari desainer senior seluruh dunia. Book 1-on-1 session gratis!</p>
+      <div class="tool-tags"><span class="tool-tag tag-free">Free</span><span class="tool-tag tag-collab">Mentoring</span></div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-logo" style="background:#ff4500;color:#fff">Rd</div>
+        <div><div class="tool-name">r/UXDesign</div><div class="tool-url">reddit.com</div></div>
+      </div>
+      <p>Subreddit aktif dengan 1M+ anggota. Portfolio feedback, lowongan kerja, dan diskusi industri.</p>
+      <div class="tool-tags"><span class="tool-tag tag-free">Free</span><span class="tool-tag tag-collab">Forum</span></div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-logo" style="background:#000;color:#fff">Tw</div>
+        <div><div class="tool-name">Twitter Design Community</div><div class="tool-url">twitter.com/x.com</div></div>
+      </div>
+      <p>Follow desainer top dunia: @steveschoger, @rsms, @mds, @aarron, @jnd1er.</p>
+      <div class="tool-tags"><span class="tool-tag tag-free">Free</span><span class="tool-tag tag-collab">Social</span></div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-logo" style="background:#e91e63;color:#fff">Dr</div>
+        <div><div class="tool-name">Dribbble Community</div><div class="tool-url">dribbble.com</div></div>
+      </div>
+      <p>Showcase portfolio, dapatkan feedback, dan terhubung dengan desainer dari seluruh dunia.</p>
+      <div class="tool-tags"><span class="tool-tag tag-free">Free</span><span class="tool-tag tag-collab">Portfolio</span></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="foot-brand">UI/<span>UX</span> Lengkap</div>
+    <p style="margin-top:8px">Dibuat untuk desainer Indonesia yang ingin berkembang.</p>
+    <p style="margin-top:4px;font-size:12px">50+ Free Tools · 30+ Ebook · 8 Modul Materi · 100% Gratis</p>
+  </div>
+  <div style="text-align:right">
+    <p style="font-size:12px;margin-bottom:4px">Dibuat dengan ❤️ untuk komunitas desain Indonesia</p>
+    <p style="font-size:11px;color:#ffffff44">Semua resource yang tertera adalah milik platform masing-masing</p>
+  </div>
+</footer>
+
+</body>
+</html>
