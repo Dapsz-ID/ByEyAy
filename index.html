@@ -1,0 +1,2536 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NetLearn — Materi Jaringan Komputer Lengkap</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0f1e;
+    --surface: #111827;
+    --surface2: #1a2235;
+    --border: #1f2d47;
+    --accent: #00e5ff;
+    --accent2: #7c3aed;
+    --accent3: #f59e0b;
+    --danger: #ef4444;
+    --success: #10b981;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --card: #131c2e;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── AMBIENT BG ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 10% 10%, rgba(0,229,255,0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 90% 80%, rgba(124,58,237,0.07) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(10,15,30,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+  }
+
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.2rem;
+    color: var(--accent);
+    letter-spacing: -0.5px;
+    text-decoration: none;
+  }
+
+  .nav-logo span { color: var(--text); }
+
+  .hamburger {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 6px;
+  }
+
+  .hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--text);
+    border-radius: 2px;
+    transition: all 0.3s;
+  }
+
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 60px; left: 0; right: 0;
+    background: rgba(10,15,30,0.97);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    z-index: 99;
+    padding: 1rem;
+    flex-direction: column;
+    gap: 0.25rem;
+    max-height: calc(100vh - 60px);
+    overflow-y: auto;
+  }
+
+  .mobile-menu.open { display: flex; }
+
+  .menu-item {
+    padding: 0.65rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: var(--muted);
+    transition: all 0.2s;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .menu-item:hover, .menu-item.active {
+    background: var(--surface2);
+    color: var(--accent);
+  }
+
+  .menu-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--muted);
+    flex-shrink: 0;
+    transition: background 0.2s;
+  }
+
+  .menu-item:hover .menu-dot, .menu-item.active .menu-dot {
+    background: var(--accent);
+  }
+
+  /* ── MAIN ── */
+  main {
+    padding-top: 60px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 3rem 1.25rem 2rem;
+    text-align: center;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(0,229,255,0.1);
+    border: 1px solid rgba(0,229,255,0.25);
+    border-radius: 50px;
+    padding: 0.35rem 0.9rem;
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2rem, 8vw, 3.5rem);
+    line-height: 1.1;
+    letter-spacing: -1px;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  .hero h1 .grad {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub {
+    margin-top: 1rem;
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    max-width: 480px;
+    margin-inline: auto;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 2rem;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--accent);
+  }
+
+  .stat-label {
+    font-size: 0.7rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── SEARCH ── */
+  .search-wrap {
+    padding: 0 1.25rem 2rem;
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+
+  .search-input {
+    width: 100%;
+    max-width: 500px;
+    display: block;
+    margin: 0 auto;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 0.75rem 1.1rem 0.75rem 2.75rem;
+    color: var(--text);
+    font-size: 0.9rem;
+    font-family: 'DM Sans', sans-serif;
+    outline: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: 0.9rem center;
+    transition: border-color 0.2s;
+  }
+
+  .search-input:focus {
+    border-color: var(--accent);
+  }
+
+  .search-input::placeholder { color: var(--muted); }
+
+  /* ── SECTIONS ── */
+  .section {
+    padding: 2rem 1.25rem;
+    display: none;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .section.active { display: block; }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.4rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .section-sub {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+  }
+
+  /* ── CARD GRID ── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+
+  @media (min-width: 500px) {
+    .card-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.1rem;
+    cursor: pointer;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(0,229,255,0.04) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+
+  .card:hover {
+    border-color: rgba(0,229,255,0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  }
+
+  .card:hover::before { opacity: 1; }
+
+  .card-icon {
+    font-size: 1.6rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+  }
+
+  .card-desc {
+    font-size: 0.8rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .card-tag {
+    display: inline-block;
+    margin-top: 0.6rem;
+    background: rgba(0,229,255,0.08);
+    border: 1px solid rgba(0,229,255,0.15);
+    border-radius: 4px;
+    padding: 0.15rem 0.5rem;
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.03em;
+  }
+
+  /* ── DETAIL MODAL ── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(8px);
+    z-index: 200;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px 20px 0 0;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 1.5rem 1.25rem 2rem;
+    animation: slideUp 0.35s cubic-bezier(0.34,1.56,0.64,1) both;
+  }
+
+  @media (min-width: 600px) {
+    .modal-overlay { align-items: center; }
+    .modal {
+      border-radius: 20px;
+      max-width: 580px;
+    }
+  }
+
+  .modal-handle {
+    width: 36px;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin: 0 auto 1.25rem;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1rem;
+    color: var(--muted);
+    transition: all 0.2s;
+    position: sticky;
+    top: 0;
+    float: right;
+    z-index: 10;
+  }
+
+  .modal-close:hover { background: var(--danger); color: white; border-color: var(--danger); }
+
+  .modal-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+
+  .modal-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin-bottom: 0.4rem;
+  }
+
+  .modal-subtitle {
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 1.25rem;
+  }
+
+  .modal-body { font-size: 0.88rem; line-height: 1.7; color: #c7d2e0; }
+
+  .modal-body h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.95rem;
+    color: var(--accent);
+    margin: 1.25rem 0 0.5rem;
+  }
+
+  .modal-body ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .modal-body ul li::before {
+    content: '→ ';
+    color: var(--accent);
+  }
+
+  .info-box {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+    font-size: 0.82rem;
+  }
+
+  .warning-box {
+    background: rgba(239,68,68,0.08);
+    border: 1px solid rgba(239,68,68,0.2);
+    border-left: 3px solid var(--danger);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+    font-size: 0.82rem;
+    color: #fca5a5;
+  }
+
+  .success-box {
+    background: rgba(16,185,129,0.08);
+    border: 1px solid rgba(16,185,129,0.2);
+    border-left: 3px solid var(--success);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+    font-size: 0.82rem;
+    color: #6ee7b7;
+  }
+
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin: 0.75rem 0;
+  }
+
+  .tag {
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    font-weight: 500;
+  }
+
+  .tag-cyan { background: rgba(0,229,255,0.1); color: var(--accent); border: 1px solid rgba(0,229,255,0.2); }
+  .tag-purple { background: rgba(124,58,237,0.1); color: #a78bfa; border: 1px solid rgba(124,58,237,0.2); }
+  .tag-amber { background: rgba(245,158,11,0.1); color: var(--accent3); border: 1px solid rgba(245,158,11,0.2); }
+  .tag-red { background: rgba(239,68,68,0.1); color: #f87171; border: 1px solid rgba(239,68,68,0.2); }
+  .tag-green { background: rgba(16,185,129,0.1); color: #34d399; border: 1px solid rgba(16,185,129,0.2); }
+
+  /* ── OSI TABLE ── */
+  .osi-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.78rem;
+    margin: 1rem 0;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .osi-table th {
+    background: var(--surface2);
+    padding: 0.6rem 0.75rem;
+    text-align: left;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .osi-table td {
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid rgba(31,45,71,0.5);
+  }
+
+  .osi-table tr:last-child td { border-bottom: none; }
+  .osi-table tr:hover td { background: rgba(0,229,255,0.03); }
+
+  .layer-badge {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    text-align: center;
+    line-height: 20px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.72rem;
+  }
+
+  /* ── BOTTOM NAV ── */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(10,15,30,0.95);
+    backdrop-filter: blur(16px);
+    border-top: 1px solid var(--border);
+    display: flex;
+    padding: 0.5rem 0 env(safe-area-inset-bottom, 0.5rem);
+  }
+
+  .bottom-nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 0.4rem 0;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--muted);
+    font-size: 0.65rem;
+    border: none;
+    background: none;
+  }
+
+  .bottom-nav-item.active { color: var(--accent); }
+
+  .bottom-nav-icon {
+    font-size: 1.2rem;
+    line-height: 1;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+
+  /* ── PROGRESS BAR ── */
+  .progress-bar {
+    width: 100%;
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    margin: 0.5rem 0 1rem;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 2px;
+    transition: width 0.6s ease;
+  }
+
+  /* ── TOPOLOGY VISUAL ── */
+  .topo-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    margin: 1rem 0;
+  }
+
+  .topo-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 0.85rem;
+    text-align: center;
+  }
+
+  .topo-visual {
+    font-size: 0.6rem;
+    color: var(--accent);
+    font-family: monospace;
+    line-height: 1.4;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+  }
+
+  .topo-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+
+  /* ── ATTACK CARD ── */
+  .attack-card {
+    background: rgba(239,68,68,0.04);
+    border: 1px solid rgba(239,68,68,0.15);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .attack-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .attack-icon { font-size: 1.2rem; }
+
+  .attack-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+  }
+
+  .severity {
+    margin-left: auto;
+    font-size: 0.7rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+
+  .sev-high { background: rgba(239,68,68,0.2); color: #f87171; }
+  .sev-med { background: rgba(245,158,11,0.2); color: #fbbf24; }
+  .sev-low { background: rgba(16,185,129,0.2); color: #34d399; }
+
+  .padder { height: 80px; }
+
+  /* Search highlight */
+  mark { background: rgba(0,229,255,0.2); color: var(--accent); border-radius: 2px; }
+
+  /* Smooth card entrance */
+  .card { animation: fadeUp 0.4s ease both; }
+  .card:nth-child(2) { animation-delay: 0.05s; }
+  .card:nth-child(3) { animation-delay: 0.1s; }
+  .card:nth-child(4) { animation-delay: 0.15s; }
+  .card:nth-child(5) { animation-delay: 0.2s; }
+  .card:nth-child(6) { animation-delay: 0.25s; }
+
+  @media (min-width: 768px) {
+    .card-grid { grid-template-columns: repeat(3, 1fr); }
+    .hero { padding: 4rem 2rem 2.5rem; }
+    .section { padding: 2rem 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Net<span>Learn</span></a>
+  <button class="hamburger" id="hamburger" aria-label="menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a class="menu-item active" data-section="overview"><span class="menu-dot"></span>Overview</a>
+  <a class="menu-item" data-section="jenis"><span class="menu-dot"></span>Jenis Jaringan</a>
+  <a class="menu-item" data-section="topologi"><span class="menu-dot"></span>Topologi</a>
+  <a class="menu-item" data-section="protokol"><span class="menu-dot"></span>Protokol & Model OSI</a>
+  <a class="menu-item" data-section="perangkat"><span class="menu-dot"></span>Perangkat Jaringan</a>
+  <a class="menu-item" data-section="ip"><span class="menu-dot"></span>IP & Subnetting</a>
+  <a class="menu-item" data-section="layanan"><span class="menu-dot"></span>Layanan Jaringan</a>
+  <a class="menu-item" data-section="keamanan"><span class="menu-dot"></span>Keamanan & Serangan</a>
+  <a class="menu-item" data-section="pertahanan"><span class="menu-dot"></span>Cara Pertahanan</a>
+</div>
+
+<main>
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge">📡 Materi Lengkap · 2026</div>
+    <h1>Jaringan Komputer<br><span class="grad">dari Dasar ke Expert</span></h1>
+    <p class="hero-sub">Panduan lengkap memahami networking — konsep, protokol, perangkat, keamanan, dan cara bertahan dari serangan.</p>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">9</div><div class="stat-label">Topik</div></div>
+      <div class="stat"><div class="stat-num">60+</div><div class="stat-label">Materi</div></div>
+      <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Ilmu</div></div>
+    </div>
+  </div>
+
+  <!-- SEARCH -->
+  <div class="search-wrap">
+    <input type="text" class="search-input" id="searchInput" placeholder="Cari materi, protokol, serangan...">
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SECTION: OVERVIEW -->
+  <!-- ══════════════════════════════════════════ -->
+  <section class="section active" id="section-overview">
+    <div class="section-title">🌐 Overview Jaringan Komputer</div>
+    <p class="section-sub">Pilih topik untuk memulai belajar jaringan komputer dari dasar.</p>
+    <div class="card-grid" id="overviewGrid">
+      <div class="card" onclick="showDetail('apa-itu')">
+        <div class="card-icon">🖥️</div>
+        <div class="card-title">Apa itu Jaringan?</div>
+        <div class="card-desc">Definisi, sejarah, dan tujuan jaringan komputer modern.</div>
+        <div class="card-tag">Dasar</div>
+      </div>
+      <div class="card" onclick="showDetail('jenis-jaringan-overview')">
+        <div class="card-icon">🗺️</div>
+        <div class="card-title">Jenis-Jenis Jaringan</div>
+        <div class="card-desc">LAN, WAN, MAN, PAN, dan berbagai klasifikasi jaringan.</div>
+        <div class="card-tag">Dasar</div>
+      </div>
+      <div class="card" onclick="showDetail('komponen')">
+        <div class="card-icon">⚙️</div>
+        <div class="card-title">Komponen Jaringan</div>
+        <div class="card-desc">Hardware dan software yang membangun sebuah jaringan.</div>
+        <div class="card-tag">Dasar</div>
+      </div>
+      <div class="card" onclick="showDetail('media-transmisi')">
+        <div class="card-icon">📶</div>
+        <div class="card-title">Media Transmisi</div>
+        <div class="card-desc">Kabel UTP, fiber optik, wireless, dan coaxial.</div>
+        <div class="card-tag">Dasar</div>
+      </div>
+      <div class="card" onclick="showDetail('bandwidth')">
+        <div class="card-icon">📊</div>
+        <div class="card-title">Bandwidth & Latency</div>
+        <div class="card-desc">Perbedaan bandwidth, throughput, latency, dan jitter.</div>
+        <div class="card-tag">Konsep</div>
+      </div>
+      <div class="card" onclick="showDetail('model-jaringan')">
+        <div class="card-icon">🏗️</div>
+        <div class="card-title">Model Client-Server & P2P</div>
+        <div class="card-desc">Arsitektur dasar jaringan modern.</div>
+        <div class="card-tag">Konsep</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SECTION: JENIS JARINGAN -->
+  <!-- ══════════════════════════════════════════ -->
+  <section class="section" id="section-jenis">
+    <div class="section-title">🗺️ Jenis-Jenis Jaringan</div>
+    <p class="section-sub">Klasifikasi jaringan berdasarkan cakupan geografis dan fungsinya.</p>
+    <div class="card-grid">
+      <div class="card" onclick="showDetail('lan')">
+        <div class="card-icon">🏠</div>
+        <div class="card-title">LAN</div>
+        <div class="card-desc">Local Area Network — jaringan dalam area kecil seperti rumah atau gedung.</div>
+        <div class="card-tag">Local</div>
+      </div>
+      <div class="card" onclick="showDetail('wan')">
+        <div class="card-icon">🌍</div>
+        <div class="card-title">WAN</div>
+        <div class="card-desc">Wide Area Network — jaringan antar kota, negara, hingga benua.</div>
+        <div class="card-tag">Wide</div>
+      </div>
+      <div class="card" onclick="showDetail('man')">
+        <div class="card-icon">🏙️</div>
+        <div class="card-title">MAN</div>
+        <div class="card-desc">Metropolitan Area Network — mencakup satu kota.</div>
+        <div class="card-tag">Metro</div>
+      </div>
+      <div class="card" onclick="showDetail('pan')">
+        <div class="card-icon">📱</div>
+        <div class="card-title">PAN</div>
+        <div class="card-desc">Personal Area Network — Bluetooth, NFC, perangkat pribadi.</div>
+        <div class="card-tag">Personal</div>
+      </div>
+      <div class="card" onclick="showDetail('wlan')">
+        <div class="card-icon">📡</div>
+        <div class="card-title">WLAN / Wi-Fi</div>
+        <div class="card-desc">Jaringan lokal nirkabel menggunakan standar IEEE 802.11.</div>
+        <div class="card-tag">Wireless</div>
+      </div>
+      <div class="card" onclick="showDetail('vpn')">
+        <div class="card-icon">🔐</div>
+        <div class="card-title">VPN</div>
+        <div class="card-desc">Virtual Private Network — terowongan aman di jaringan publik.</div>
+        <div class="card-tag">Virtual</div>
+      </div>
+      <div class="card" onclick="showDetail('vlan')">
+        <div class="card-icon">🔀</div>
+        <div class="card-title">VLAN</div>
+        <div class="card-desc">Virtual LAN — segmentasi logis dalam satu jaringan fisik.</div>
+        <div class="card-tag">Virtual</div>
+      </div>
+      <div class="card" onclick="showDetail('san')">
+        <div class="card-icon">💾</div>
+        <div class="card-title">SAN</div>
+        <div class="card-desc">Storage Area Network — jaringan khusus untuk storage data.</div>
+        <div class="card-tag">Storage</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SECTION: TOPOLOGI -->
+  <!-- ══════════════════════════════════════════ -->
+  <section class="section" id="section-topologi">
+    <div class="section-title">🔷 Topologi Jaringan</div>
+    <p class="section-sub">Cara pengaturan dan koneksi fisik maupun logis antar perangkat.</p>
+    <div class="topo-grid">
+      <div class="topo-card" onclick="showDetail('topo-bus')">
+        <div class="topo-visual">●—●—●—●<br>  |<br> BUS</div>
+        <div class="topo-name">Bus</div>
+      </div>
+      <div class="topo-card" onclick="showDetail('topo-star')">
+        <div class="topo-visual"> ● ● ●<br>  \|/<br>  ★<br>  /|\<br> ● ● ●</div>
+        <div class="topo-name">Star</div>
+      </div>
+      <div class="topo-card" onclick="showDetail('topo-ring')">
+        <div class="topo-visual">●—●<br>|&nbsp;&nbsp;&nbsp;|<br>●—●</div>
+        <div class="topo-name">Ring</div>
+      </div>
+      <div class="topo-card" onclick="showDetail('topo-mesh')">
+        <div class="topo-visual">●═●<br>║╳║<br>●═●</div>
+        <div class="topo-name">Mesh</div>
+      </div>
+      <div class="topo-card" onclick="showDetail('topo-tree')">
+        <div class="topo-visual">&nbsp;&nbsp;★<br>&nbsp;/&nbsp;\<br>★&nbsp;&nbsp;★<br>|&nbsp;\&nbsp;|<br>●&nbsp;●&nbsp;●</div>
+        <div class="topo-name">Tree</div>
+      </div>
+      <div class="topo-card" onclick="showDetail('topo-hybrid')">
+        <div class="topo-visual">★━●━★<br>|&nbsp;&nbsp;&nbsp;|<br>●&nbsp;&nbsp;&nbsp;●</div>
+        <div class="topo-name">Hybrid</div>
+      </div>
+    </div>
+    <div class="card-grid" style="margin-top:0.75rem">
+      <div class="card" onclick="showDetail('topo-bus')">
+        <div class="card-icon">🚌</div>
+        <div class="card-title">Topologi Bus</div>
+        <div class="card-desc">Semua node terhubung ke satu kabel utama (backbone).</div>
+        <div class="card-tag">Legacy</div>
+      </div>
+      <div class="card" onclick="showDetail('topo-star')">
+        <div class="card-icon">⭐</div>
+        <div class="card-title">Topologi Star</div>
+        <div class="card-desc">Semua node terhubung ke switch/hub pusat. Paling umum digunakan.</div>
+        <div class="card-tag">Populer</div>
+      </div>
+      <div class="card" onclick="showDetail('topo-ring')">
+        <div class="card-icon">💍</div>
+        <div class="card-title">Topologi Ring</div>
+        <div class="card-desc">Node terhubung membentuk lingkaran, data mengalir satu arah.</div>
+        <div class="card-tag">Klasik</div>
+      </div>
+      <div class="card" onclick="showDetail('topo-mesh')">
+        <div class="card-icon">🕸️</div>
+        <div class="card-title">Topologi Mesh</div>
+        <div class="card-desc">Setiap node terhubung ke setiap node lain. Redundansi tinggi.</div>
+        <div class="card-tag">Redundan</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SECTION: PROTOKOL & OSI -->
+  <!-- ══════════════════════════════════════════ -->
+  <section class="section" id="section-protokol">
+    <div class="section-title">📋 Protokol & Model OSI</div>
+    <p class="section-sub">Aturan komunikasi dan model referensi jaringan internasional.</p>
+
+    <table class="osi-table">
+      <thead>
+        <tr>
+          <th>Layer</th>
+          <th>Nama</th>
+          <th>Fungsi</th>
+          <th>Contoh</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="layer-badge" style="background:rgba(239,68,68,0.2);color:#f87171">7</span></td><td>Application</td><td>Antarmuka ke aplikasi pengguna</td><td>HTTP, FTP, DNS, SMTP</td></tr>
+        <tr><td><span class="layer-badge" style="background:rgba(245,158,11,0.2);color:#fbbf24">6</span></td><td>Presentation</td><td>Enkripsi, format data, kompresi</td><td>SSL/TLS, JPEG, MP3</td></tr>
+        <tr><td><span class="layer-badge" style="background:rgba(234,179,8,0.2);color:#fde047">5</span></td><td>Session</td><td>Manajemen sesi komunikasi</td><td>NetBIOS, RPC, SQL</td></tr>
+        <tr><td><span class="layer-badge" style="background:rgba(34,197,94,0.2);color:#4ade80">4</span></td><td>Transport</td><td>Kontrol aliran & keandalan data</td><td>TCP, UDP</td></tr>
+        <tr><td><span class="layer-badge" style="background:rgba(6,182,212,0.2);color:#22d3ee">3</span></td><td>Network</td><td>Routing & pengalamatan logis</td><td>IP, ICMP, OSPF, BGP</td></tr>
+        <tr><td><span class="layer-badge" style="background:rgba(99,102,241,0.2);color:#818cf8">2</span></td><td>Data Link</td><td>Pengalamatan fisik, error detection</td><td>Ethernet, MAC, ARP</td></tr>
+        <tr><td><span class="layer-badge" style="background:rgba(168,85,247,0.2);color:#c084fc">1</span></td><td>Physical</td><td>Transmisi bit melalui media fisik</td><td>Kabel, Wi-Fi, Fiber</td></tr>
+      </tbody>
+    </table>
+
+    <div class="card-grid">
+      <div class="card" onclick="showDetail('tcp-ip')">
+        <div class="card-icon">🌐</div>
+        <div class="card-title">Model TCP/IP</div>
+        <div class="card-desc">Model 4 layer yang digunakan di internet modern: Network Access, Internet, Transport, Application.</div>
+        <div class="card-tag">Fundamental</div>
+      </div>
+      <div class="card" onclick="showDetail('tcp-vs-udp')">
+        <div class="card-icon">⚖️</div>
+        <div class="card-title">TCP vs UDP</div>
+        <div class="card-desc">Perbedaan connection-oriented vs connectionless, kapan menggunakan masing-masing.</div>
+        <div class="card-tag">Transport</div>
+      </div>
+      <div class="card" onclick="showDetail('http-https')">
+        <div class="card-icon">🔗</div>
+        <div class="card-title">HTTP & HTTPS</div>
+        <div class="card-desc">Protokol transfer web, perbedaan HTTP 1.1, 2.0, 3.0, dan enkripsi TLS.</div>
+        <div class="card-tag">Application</div>
+      </div>
+      <div class="card" onclick="showDetail('dns')">
+        <div class="card-icon">📖</div>
+        <div class="card-title">DNS</div>
+        <div class="card-desc">Domain Name System — penerjemah nama domain ke IP address.</div>
+        <div class="card-tag">Application</div>
+      </div>
+      <div class="card" onclick="showDetail('dhcp')">
+        <div class="card-icon">🔧</div>
+        <div class="card-title">DHCP</div>
+        <div class="card-desc">Dynamic Host Configuration Protocol — pemberian IP otomatis.</div>
+        <div class="card-tag">Network</div>
+      </div>
+      <div class="card" onclick="showDetail('arp')">
+        <div class="card-icon">🔍</div>
+        <div class="card-title">ARP & ICMP</div>
+        <div class="card-desc">Address Resolution Protocol dan Internet Control Message Protocol.</div>
+        <div class="card-tag">Network</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SECTION: PERANGKAT -->
+  <!-- ══════════════════════════════════════════ -->
+  <section class="section" id="section-perangkat">
+    <div class="section-title">🔧 Perangkat Jaringan</div>
+    <p class="section-sub">Hardware yang membangun dan menghubungkan jaringan komputer.</p>
+    <div class="card-grid">
+      <div class="card" onclick="showDetail('router')">
+        <div class="card-icon">📡</div>
+        <div class="card-title">Router</div>
+        <div class="card-desc">Menghubungkan jaringan berbeda, mengarahkan paket data berdasarkan IP.</div>
+        <div class="card-tag">Layer 3</div>
+      </div>
+      <div class="card" onclick="showDetail('switch')">
+        <div class="card-icon">🔀</div>
+        <div class="card-title">Switch</div>
+        <div class="card-desc">Menghubungkan perangkat dalam satu LAN menggunakan MAC address.</div>
+        <div class="card-tag">Layer 2</div>
+      </div>
+      <div class="card" onclick="showDetail('hub')">
+        <div class="card-icon">🔁</div>
+        <div class="card-title">Hub</div>
+        <div class="card-desc">Meneruskan paket ke semua port (broadcast). Sudah jarang digunakan.</div>
+        <div class="card-tag">Layer 1</div>
+      </div>
+      <div class="card" onclick="showDetail('modem')">
+        <div class="card-icon">📟</div>
+        <div class="card-title">Modem</div>
+        <div class="card-desc">Modulator-Demodulator, menghubungkan jaringan lokal ke ISP/internet.</div>
+        <div class="card-tag">Layer 1</div>
+      </div>
+      <div class="card" onclick="showDetail('ap')">
+        <div class="card-icon">📶</div>
+        <div class="card-title">Access Point</div>
+        <div class="card-desc">Menyediakan koneksi wireless ke jaringan yang ada.</div>
+        <div class="card-tag">Wireless</div>
+      </div>
+      <div class="card" onclick="showDetail('firewall-device')">
+        <div class="card-icon">🛡️</div>
+        <div class="card-title">Firewall</div>
+        <div class="card-desc">Memfilter lalu lintas jaringan berdasarkan aturan keamanan.</div>
+        <div class="card-tag">Security</div>
+      </div>
+      <div class="card" onclick="showDetail('proxy')">
+        <div class="card-icon">🕵️</div>
+        <div class="card-title">Proxy Server</div>
+        <div class="card-desc">Perantara antara client dan server, bisa caching dan filtering.</div>
+        <div class="card-tag">Server</div>
+      </div>
+      <div class="card" onclick="showDetail('repeater')">
+        <div class="card-icon">📢</div>
+        <div class="card-title">Repeater & Bridge</div>
+        <div class="card-desc">Memperkuat sinyal dan menghubungkan dua segmen jaringan.</div>
+        <div class="card-tag">Layer 1-2</div>
+      </div>
+      <div class="card" onclick="showDetail('ids-ips')">
+        <div class="card-icon">👁️</div>
+        <div class="card-title">IDS & IPS</div>
+        <div class="card-desc">Intrusion Detection & Prevention System — mendeteksi dan mencegah intrusi.</div>
+        <div class="card-tag">Security</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SECTION: IP & SUBNETTING -->
+  <!-- ══════════════════════════════════════════ -->
+  <section class="section" id="section-ip">
+    <div class="section-title">🔢 IP Address & Subnetting</div>
+    <p class="section-sub">Pengalamatan jaringan, kelas IP, dan pembagian subnet.</p>
+    <div class="card-grid">
+      <div class="card" onclick="showDetail('ipv4')">
+        <div class="card-icon">4️⃣</div>
+        <div class="card-title">IPv4</div>
+        <div class="card-desc">Internet Protocol versi 4 — 32-bit, format dotted decimal, 4.3 miliar alamat.</div>
+        <div class="card-tag">Network</div>
+      </div>
+      <div class="card" onclick="showDetail('ipv6')">
+        <div class="card-icon">6️⃣</div>
+        <div class="card-title">IPv6</div>
+        <div class="card-desc">128-bit address, mengatasi keterbatasan IPv4, format hexadecimal.</div>
+        <div class="card-tag">Modern</div>
+      </div>
+      <div class="card" onclick="showDetail('kelas-ip')">
+        <div class="card-icon">📊</div>
+        <div class="card-title">Kelas IP</div>
+        <div class="card-desc">Kelas A, B, C, D, E beserta range dan penggunaannya.</div>
+        <div class="card-tag">Dasar</div>
+      </div>
+      <div class="card" onclick="showDetail('subnetting')">
+        <div class="card-icon">✂️</div>
+        <div class="card-title">Subnetting</div>
+        <div class="card-desc">Pembagian jaringan menjadi subnet-subnet yang lebih kecil menggunakan subnet mask.</div>
+        <div class="card-tag">Penting</div>
+      </div>
+      <div class="card" onclick="showDetail('cidr')">
+        <div class="card-icon">📐</div>
+        <div class="card-title">CIDR</div>
+        <div class="card-desc">Classless Inter-Domain Routing — notasi /xx untuk subnet mask.</div>
+        <div class="card-tag">Routing</div>
+      </div>
+      <div class="card" onclick="showDetail('nat')">
+        <div class="card-icon">🔄</div>
+        <div class="card-title">NAT & PAT</div>
+        <div class="card-desc">Network Address Translation — menerjemahkan IP privat ke publik.</div>
+        <div class="card-tag">Network</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SECTION: LAYANAN -->
+  <!-- ══════════════════════════════════════════ -->
+  <section class="section" id="section-layanan">
+    <div class="section-title">🌐 Layanan Jaringan</div>
+    <p class="section-sub">Berbagai layanan dan protokol yang berjalan di atas jaringan.</p>
+    <div class="card-grid">
+      <div class="card" onclick="showDetail('email')">
+        <div class="card-icon">✉️</div>
+        <div class="card-title">Email (SMTP/POP3/IMAP)</div>
+        <div class="card-desc">Protokol pengiriman dan penerimaan email antar server.</div>
+        <div class="card-tag">Application</div>
+      </div>
+      <div class="card" onclick="showDetail('ftp')">
+        <div class="card-icon">📁</div>
+        <div class="card-title">FTP & SFTP</div>
+        <div class="card-desc">File Transfer Protocol untuk transfer file antar host.</div>
+        <div class="card-tag">Application</div>
+      </div>
+      <div class="card" onclick="showDetail('ssh')">
+        <div class="card-icon">🔑</div>
+        <div class="card-title">SSH & Telnet</div>
+        <div class="card-desc">Remote access ke perangkat jaringan secara aman maupun tidak.</div>
+        <div class="card-tag">Remote</div>
+      </div>
+      <div class="card" onclick="showDetail('snmp')">
+        <div class="card-icon">📊</div>
+        <div class="card-title">SNMP</div>
+        <div class="card-desc">Simple Network Management Protocol untuk monitoring jaringan.</div>
+        <div class="card-tag">Management</div>
+      </div>
+      <div class="card" onclick="showDetail('ntp')">
+        <div class="card-icon">🕐</div>
+        <div class="card-title">NTP</div>
+        <div class="card-desc">Network Time Protocol — sinkronisasi waktu antar perangkat.</div>
+        <div class="card-tag">Sync</div>
+      </div>
+      <div class="card" onclick="showDetail('cdn')">
+        <div class="card-icon">🌍</div>
+        <div class="card-title">CDN</div>
+        <div class="card-desc">Content Delivery Network — distribusi konten dari server terdekat.</div>
+        <div class="card-tag">Optimasi</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SECTION: KEAMANAN & SERANGAN -->
+  <!-- ══════════════════════════════════════════ -->
+  <section class="section" id="section-keamanan">
+    <div class="section-title">⚠️ Ancaman & Serangan Jaringan</div>
+    <p class="section-sub">Berbagai jenis serangan siber yang mengancam keamanan jaringan.</p>
+
+    <div class="attack-card" onclick="showDetail('ddos')">
+      <div class="attack-header">
+        <span class="attack-icon">💥</span>
+        <span class="attack-name">DDoS Attack</span>
+        <span class="severity sev-high">TINGGI</span>
+      </div>
+      <div class="card-desc">Membanjiri server dengan traffic dari banyak sumber sekaligus hingga layanan lumpuh.</div>
+    </div>
+
+    <div class="attack-card" onclick="showDetail('mitm')">
+      <div class="attack-header">
+        <span class="attack-icon">🕵️</span>
+        <span class="attack-name">Man-in-the-Middle (MitM)</span>
+        <span class="severity sev-high">TINGGI</span>
+      </div>
+      <div class="card-desc">Penyerang menyisip di antara dua pihak berkomunikasi dan mencegat/mengubah data.</div>
+    </div>
+
+    <div class="attack-card" onclick="showDetail('phishing')">
+      <div class="attack-header">
+        <span class="attack-icon">🎣</span>
+        <span class="attack-name">Phishing</span>
+        <span class="severity sev-high">TINGGI</span>
+      </div>
+      <div class="card-desc">Penipuan berupa email/website palsu untuk mencuri kredensial atau data sensitif.</div>
+    </div>
+
+    <div class="attack-card" onclick="showDetail('sql-injection')">
+      <div class="attack-header">
+        <span class="attack-icon">💉</span>
+        <span class="attack-name">SQL Injection</span>
+        <span class="severity sev-high">TINGGI</span>
+      </div>
+      <div class="card-desc">Menyisipkan kode SQL berbahaya ke input untuk memanipulasi database.</div>
+    </div>
+
+    <div class="attack-card" onclick="showDetail('xss')">
+      <div class="attack-header">
+        <span class="attack-icon">💻</span>
+        <span class="attack-name">Cross-Site Scripting (XSS)</span>
+        <span class="severity sev-med">SEDANG</span>
+      </div>
+      <div class="card-desc">Menyisipkan script berbahaya ke halaman web yang dilihat pengguna lain.</div>
+    </div>
+
+    <div class="attack-card" onclick="showDetail('arp-spoofing')">
+      <div class="attack-header">
+        <span class="attack-icon">🎭</span>
+        <span class="attack-name">ARP Spoofing</span>
+        <span class="severity sev-med">SEDANG</span>
+      </div>
+      <div class="card-desc">Memalsukan tabel ARP untuk mengarahkan traffic ke perangkat penyerang.</div>
+    </div>
+
+    <div class="attack-card" onclick="showDetail('dns-poisoning')">
+      <div class="attack-header">
+        <span class="attack-icon">☠️</span>
+        <span class="attack-name">DNS Poisoning</span>
+        <span class="severity sev-med">SEDANG</span>
+      </div>
+      <div class="card-desc">Mengubah cache DNS untuk mengarahkan pengguna ke situs palsu.</div>
+    </div>
+
+    <div class="attack-card" onclick="showDetail('ransomware')">
+      <div class="attack-header">
+        <span class="attack-icon">🔒</span>
+        <span class="attack-name">Ransomware</span>
+        <span class="severity sev-high">TINGGI</span>
+      </div>
+      <div class="card-desc">Malware yang mengenkripsi file korban dan meminta tebusan untuk membukanya.</div>
+    </div>
+
+    <div class="attack-card" onclick="showDetail('port-scanning')">
+      <div class="attack-header">
+        <span class="attack-icon">🔍</span>
+        <span class="attack-name">Port Scanning</span>
+        <span class="severity sev-low">RENDAH</span>
+      </div>
+      <div class="card-desc">Mengidentifikasi port terbuka di host target untuk menemukan kerentanan.</div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SECTION: PERTAHANAN -->
+  <!-- ══════════════════════════════════════════ -->
+  <section class="section" id="section-pertahanan">
+    <div class="section-title">🛡️ Cara Bertahan & Proteksi</div>
+    <p class="section-sub">Strategi dan teknik untuk melindungi jaringan dari ancaman.</p>
+    <div class="card-grid">
+      <div class="card" onclick="showDetail('defense-firewall')">
+        <div class="card-icon">🔥</div>
+        <div class="card-title">Firewall Rules</div>
+        <div class="card-desc">Mengonfigurasi aturan firewall untuk memblokir traffic berbahaya secara selektif.</div>
+        <div class="card-tag">Proteksi</div>
+      </div>
+      <div class="card" onclick="showDetail('defense-encrypt')">
+        <div class="card-icon">🔐</div>
+        <div class="card-title">Enkripsi Data</div>
+        <div class="card-desc">TLS, AES, RSA — melindungi data saat transit maupun di storage.</div>
+        <div class="card-tag">Enkripsi</div>
+      </div>
+      <div class="card" onclick="showDetail('defense-vpn')">
+        <div class="card-icon">🌐</div>
+        <div class="card-title">VPN & Zero Trust</div>
+        <div class="card-desc">Enkripsi koneksi dan arsitektur "never trust, always verify".</div>
+        <div class="card-tag">Arsitektur</div>
+      </div>
+      <div class="card" onclick="showDetail('defense-patch')">
+        <div class="card-icon">🔧</div>
+        <div class="card-title">Patch Management</div>
+        <div class="card-desc">Menjaga semua sistem dan software selalu diperbarui untuk menutup celah keamanan.</div>
+        <div class="card-tag">Maintenance</div>
+      </div>
+      <div class="card" onclick="showDetail('defense-2fa')">
+        <div class="card-icon">🔑</div>
+        <div class="card-title">Multi-Factor Authentication</div>
+        <div class="card-desc">Lapisan autentikasi tambahan selain password — OTP, biometrik, hardware key.</div>
+        <div class="card-tag">Autentikasi</div>
+      </div>
+      <div class="card" onclick="showDetail('defense-ids')">
+        <div class="card-icon">👁️</div>
+        <div class="card-title">IDS/IPS & SIEM</div>
+        <div class="card-desc">Monitoring ancaman real-time dan korelasi event keamanan.</div>
+        <div class="card-tag">Monitoring</div>
+      </div>
+      <div class="card" onclick="showDetail('defense-backup')">
+        <div class="card-icon">💾</div>
+        <div class="card-title">Backup & Recovery</div>
+        <div class="card-desc">Strategi backup 3-2-1 dan disaster recovery plan.</div>
+        <div class="card-tag">Recovery</div>
+      </div>
+      <div class="card" onclick="showDetail('defense-segment')">
+        <div class="card-icon">🔀</div>
+        <div class="card-title">Segmentasi Jaringan</div>
+        <div class="card-desc">VLAN, DMZ, dan microsegmentation untuk membatasi dampak serangan.</div>
+        <div class="card-tag">Arsitektur</div>
+      </div>
+      <div class="card" onclick="showDetail('defense-pentest')">
+        <div class="card-icon">🧪</div>
+        <div class="card-title">Penetration Testing</div>
+        <div class="card-desc">Menguji keamanan jaringan dengan simulasi serangan sebelum penyerang nyata.</div>
+        <div class="card-tag">Testing</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="padder"></div>
+</main>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <button class="bottom-nav-item active" data-section="overview">
+    <span class="bottom-nav-icon">🏠</span>Overview
+  </button>
+  <button class="bottom-nav-item" data-section="jenis">
+    <span class="bottom-nav-icon">🗺️</span>Jenis
+  </button>
+  <button class="bottom-nav-item" data-section="topologi">
+    <span class="bottom-nav-icon">🔷</span>Topologi
+  </button>
+  <button class="bottom-nav-item" data-section="protokol">
+    <span class="bottom-nav-icon">📋</span>Protokol
+  </button>
+  <button class="bottom-nav-item" data-section="perangkat">
+    <span class="bottom-nav-icon">🔧</span>Perangkat
+  </button>
+</div>
+
+<!-- SECOND ROW NAV (dots indicator) -->
+<!-- handled via hamburger -->
+
+<!-- MODAL OVERLAY -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modalContent">
+    <div class="modal-handle"></div>
+    <button class="modal-close" onclick="closeModal(true)">✕</button>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+// ─── DATA ───────────────────────────────────────────────────────────────────
+const details = {
+  'apa-itu': {
+    icon: '🖥️', title: 'Apa itu Jaringan Komputer?', subtitle: 'Dasar Networking',
+    content: `
+<p>Jaringan komputer adalah sekumpulan dua atau lebih perangkat komputasi yang saling terhubung untuk berbagi sumber daya dan bertukar informasi.</p>
+<h3>Tujuan Jaringan</h3>
+<ul>
+  <li>Berbagi sumber daya (printer, storage, internet)</li>
+  <li>Komunikasi antar pengguna (email, chat, video call)</li>
+  <li>Berbagi data dan informasi</li>
+  <li>Centralized management</li>
+</ul>
+<h3>Sejarah Singkat</h3>
+<div class="info-box">
+  <strong>1969</strong> — ARPANET lahir, cikal bakal internet<br>
+  <strong>1983</strong> — TCP/IP diadopsi sebagai standar<br>
+  <strong>1991</strong> — World Wide Web diperkenalkan Tim Berners-Lee<br>
+  <strong>2000an</strong> — Wi-Fi dan internet mobile berkembang pesat
+</div>
+<h3>Karakteristik Jaringan</h3>
+<ul>
+  <li><strong>Performance</strong> — kecepatan dan efisiensi transmisi</li>
+  <li><strong>Reliability</strong> — keandalan dan ketersediaan</li>
+  <li><strong>Security</strong> — keamanan data dan akses</li>
+  <li><strong>Scalability</strong> — kemampuan berkembang</li>
+</ul>
+`},
+
+  'komponen': {
+    icon: '⚙️', title: 'Komponen Jaringan', subtitle: 'Hardware & Software',
+    content: `
+<h3>Hardware (Perangkat Keras)</h3>
+<ul>
+  <li>NIC (Network Interface Card) — kartu jaringan di setiap host</li>
+  <li>Kabel dan konektor (RJ-45, fiber connector)</li>
+  <li>Router, Switch, Hub, Access Point</li>
+  <li>Modem, Repeater, Bridge</li>
+  <li>Server dan workstation</li>
+</ul>
+<h3>Software (Perangkat Lunak)</h3>
+<ul>
+  <li>Sistem Operasi Jaringan (NOS) — Windows Server, Linux</li>
+  <li>Driver NIC</li>
+  <li>Protocol stack (TCP/IP)</li>
+  <li>Network management software</li>
+  <li>Security software (antivirus, firewall)</li>
+</ul>
+<div class="info-box">💡 NIC beroperasi di Layer 2 (Data Link) model OSI dan memiliki MAC address yang unik untuk setiap perangkat.</div>
+`},
+
+  'media-transmisi': {
+    icon: '📶', title: 'Media Transmisi', subtitle: 'Guided & Unguided',
+    content: `
+<h3>Guided Media (Berkabel)</h3>
+<ul>
+  <li><strong>UTP (Unshielded Twisted Pair)</strong> — paling umum, kategori Cat5e, Cat6, Cat7</li>
+  <li><strong>STP (Shielded Twisted Pair)</strong> — UTP dengan pelindung EMI</li>
+  <li><strong>Coaxial</strong> — legacy, masih dipakai untuk TV kabel</li>
+  <li><strong>Fiber Optik</strong> — single-mode (jarak jauh) & multi-mode, kecepatan tertinggi</li>
+</ul>
+<h3>Unguided Media (Nirkabel)</h3>
+<ul>
+  <li><strong>Wi-Fi</strong> — 2.4GHz & 5GHz, standar 802.11a/b/g/n/ac/ax</li>
+  <li><strong>Bluetooth</strong> — jarak pendek, PAN</li>
+  <li><strong>Cellular</strong> — 3G/4G/5G</li>
+  <li><strong>Infrared</strong> — line-of-sight, jarak sangat pendek</li>
+  <li><strong>Satellite</strong> — cakupan global, latency tinggi</li>
+</ul>
+<div class="info-box">🔥 Fiber optik single-mode bisa mentransmisikan data hingga 100 Gbps dengan jangkauan lebih dari 100 km tanpa repeater.</div>
+`},
+
+  'bandwidth': {
+    icon: '📊', title: 'Bandwidth, Latency & Throughput', subtitle: 'Metrik Performa Jaringan',
+    content: `
+<h3>Definisi</h3>
+<ul>
+  <li><strong>Bandwidth</strong> — kapasitas maksimum channel (bps, Mbps, Gbps)</li>
+  <li><strong>Throughput</strong> — bandwidth aktual yang dicapai dalam kondisi nyata</li>
+  <li><strong>Latency</strong> — waktu tempuh paket dari A ke B (ms)</li>
+  <li><strong>Jitter</strong> — variasi latency antar paket</li>
+  <li><strong>Packet Loss</strong> — persentase paket yang hilang</li>
+</ul>
+<div class="info-box">💡 <strong>Analogi:</strong> Bandwidth = lebar jalan tol. Throughput = kendaraan yang benar-benar melintas. Latency = waktu tempuh dari Jakarta ke Bandung.</div>
+<h3>Faktor yang Mempengaruhi</h3>
+<ul>
+  <li>Jenis media transmisi</li>
+  <li>Jumlah hop (router) yang dilalui</li>
+  <li>Kemacetan jaringan (congestion)</li>
+  <li>Kualitas hardware</li>
+  <li>Jarak fisik</li>
+</ul>
+<h3>Tools Pengukuran</h3>
+<ul>
+  <li>Ping — mengukur latency dan packet loss</li>
+  <li>iPerf/iPerf3 — mengukur bandwidth dan throughput</li>
+  <li>Wireshark — analisis paket detail</li>
+  <li>Speedtest.net — bandwidth internet</li>
+</ul>
+`},
+
+  'model-jaringan': {
+    icon: '🏗️', title: 'Arsitektur Jaringan', subtitle: 'Client-Server & Peer-to-Peer',
+    content: `
+<h3>Client-Server</h3>
+<p>Model di mana ada server yang menyediakan layanan dan client yang mengonsumsinya. Server selalu aktif menunggu request.</p>
+<div class="success-box">✅ Keunggulan: Centralized management, keamanan lebih baik, mudah dikelola</div>
+<div class="warning-box">⚠️ Kekurangan: Single point of failure, biaya server tinggi</div>
+<p>Contoh: Web server, email server, database server, file server</p>
+<h3>Peer-to-Peer (P2P)</h3>
+<p>Setiap node bisa bertindak sebagai client maupun server sekaligus.</p>
+<div class="success-box">✅ Keunggulan: Tidak ada single point of failure, murah, mudah setup</div>
+<div class="warning-box">⚠️ Kekurangan: Keamanan lemah, manajemen sulit, performa tidak konsisten</div>
+<p>Contoh: BitTorrent, blockchain, Skype (awal), file sharing Windows</p>
+<h3>Hybrid</h3>
+<p>Kombinasi keduanya. Misalnya, Spotify menggunakan server untuk autentikasi namun P2P untuk streaming konten ke beberapa pengguna.</p>
+`},
+
+  // JENIS
+  'lan': {
+    icon: '🏠', title: 'LAN — Local Area Network', subtitle: 'Jaringan Lokal',
+    content: `
+<p>LAN adalah jaringan yang mencakup area geografis kecil seperti rumah, kantor, atau gedung sekolah.</p>
+<h3>Karakteristik</h3>
+<ul>
+  <li>Kecepatan tinggi: 100 Mbps – 10 Gbps</li>
+  <li>Latensi rendah (kurang dari 1 ms)</li>
+  <li>Area terbatas (biasanya &lt;1 km)</li>
+  <li>Dimiliki dan dikelola pribadi</li>
+  <li>Biaya relatif murah</li>
+</ul>
+<h3>Teknologi yang Digunakan</h3>
+<ul>
+  <li>Ethernet (IEEE 802.3) — kabel UTP/fiber</li>
+  <li>Wi-Fi (IEEE 802.11) — wireless LAN</li>
+  <li>Switch sebagai perangkat utama</li>
+</ul>
+<div class="info-box">💡 LAN modern umumnya menggunakan Gigabit Ethernet (1 Gbps) atau bahkan 10 Gigabit Ethernet di data center.</div>
+<div class="tag-row">
+  <span class="tag tag-cyan">IEEE 802.3</span>
+  <span class="tag tag-purple">Ethernet</span>
+  <span class="tag tag-green">High Speed</span>
+</div>
+`},
+
+  'wan': {
+    icon: '🌍', title: 'WAN — Wide Area Network', subtitle: 'Jaringan Luas',
+    content: `
+<p>WAN mencakup area geografis yang sangat luas — antar kota, negara, bahkan benua. Internet adalah contoh terbesar WAN.</p>
+<h3>Karakteristik</h3>
+<ul>
+  <li>Kecepatan bervariasi: 1 Mbps – 100 Gbps</li>
+  <li>Latensi lebih tinggi dari LAN</li>
+  <li>Biasanya dimiliki oleh ISP/provider</li>
+  <li>Menggunakan berbagai teknologi transmisi</li>
+</ul>
+<h3>Teknologi WAN</h3>
+<ul>
+  <li><strong>MPLS</strong> — Multi-Protocol Label Switching, andalan enterprise</li>
+  <li><strong>SD-WAN</strong> — Software-Defined WAN, modern dan fleksibel</li>
+  <li><strong>Leased Line</strong> — dedicated connection, mahal tapi stabil</li>
+  <li><strong>Frame Relay</strong> — legacy, sudah jarang digunakan</li>
+  <li><strong>DSL/Fiber</strong> — koneksi broadband untuk rumah tangga</li>
+</ul>
+<div class="info-box">🌐 Internet backbone menggunakan kabel fiber optik bawah laut yang menghubungkan seluruh benua dengan kapasitas terabit per detik.</div>
+`},
+
+  'vpn': {
+    icon: '🔐', title: 'VPN — Virtual Private Network', subtitle: 'Terowongan Aman',
+    content: `
+<p>VPN membuat "terowongan" terenkripsi antara perangkat Anda dan server VPN, menyembunyikan traffic dari pengintai.</p>
+<h3>Cara Kerja VPN</h3>
+<ul>
+  <li>Client terhubung ke VPN server dengan autentikasi</li>
+  <li>Semua traffic dienkripsi dan dikemas (encapsulation)</li>
+  <li>VPN server mendekripsi dan meneruskan ke tujuan</li>
+  <li>Response dikembalikan melalui terowongan yang sama</li>
+</ul>
+<h3>Protokol VPN</h3>
+<ul>
+  <li><strong>OpenVPN</strong> — open source, sangat aman</li>
+  <li><strong>WireGuard</strong> — modern, cepat, kode minimalis</li>
+  <li><strong>IPsec/IKEv2</strong> — standar enterprise</li>
+  <li><strong>L2TP/IPsec</strong> — kompatibilitas luas</li>
+  <li><strong>PPTP</strong> — legacy, sudah tidak aman</li>
+</ul>
+<h3>Jenis VPN</h3>
+<ul>
+  <li>Remote Access VPN — individu ke jaringan perusahaan</li>
+  <li>Site-to-Site VPN — menghubungkan dua kantor berbeda kota</li>
+</ul>
+<div class="success-box">✅ VPN tidak membuat Anda 100% anonim, namun menyembunyikan traffic dari ISP dan menyembunyikan IP asli Anda.</div>
+`},
+
+  'vlan': {
+    icon: '🔀', title: 'VLAN — Virtual LAN', subtitle: 'Segmentasi Logis',
+    content: `
+<p>VLAN memungkinkan pemisahan jaringan secara logis meskipun secara fisik berada di switch yang sama.</p>
+<h3>Keuntungan VLAN</h3>
+<ul>
+  <li>Segmentasi keamanan (misal: VLAN HR, VLAN IT, VLAN Tamu)</li>
+  <li>Broadcast domain yang lebih kecil = performa lebih baik</li>
+  <li>Fleksibel tanpa perlu kabel baru</li>
+  <li>Isolasi departemen dari satu sama lain</li>
+</ul>
+<h3>Trunking</h3>
+<p>Trunk link membawa traffic dari multiple VLAN menggunakan tagging IEEE 802.1Q (dot1q). Port trunk biasanya menghubungkan switch ke router atau switch lainnya.</p>
+<div class="info-box">💡 Untuk routing antar VLAN, digunakan Router-on-a-Stick (sub-interface) atau Layer 3 Switch.</div>
+<h3>Contoh Implementasi</h3>
+<ul>
+  <li>VLAN 10 — Finance (akses sangat terbatas)</li>
+  <li>VLAN 20 — Engineering</li>
+  <li>VLAN 30 — Marketing</li>
+  <li>VLAN 99 — Management (hanya admin)</li>
+  <li>VLAN 100 — Guest WiFi (internet only)</li>
+</ul>
+`},
+
+  // TOPOLOGI
+  'topo-bus': {
+    icon: '🚌', title: 'Topologi Bus', subtitle: 'Single Backbone Cable',
+    content: `
+<p>Semua node terhubung ke satu kabel backbone. Data dikirim ke semua node, hanya node tujuan yang menerimanya.</p>
+<h3>Cara Kerja</h3>
+<ul>
+  <li>Satu kabel backbone (trunk) sebagai media bersama</li>
+  <li>Setiap ujung kabel dipasang terminator</li>
+  <li>Hanya satu node yang bisa mengirim data sekaligus (CSMA/CD)</li>
+  <li>Data broadcast ke semua node</li>
+</ul>
+<div class="success-box">✅ Kelebihan: Instalasi murah dan sederhana, tidak butuh banyak kabel</div>
+<div class="warning-box">⚠️ Kekurangan: Satu kabel rusak → seluruh jaringan mati. Sulit troubleshoot. Performa menurun jika node banyak.</div>
+<h3>Status</h3>
+<p>Topologi Bus sudah sangat jarang digunakan. Pernah populer di era 10BASE-2 dan 10BASE-5 Ethernet.</p>
+`},
+
+  'topo-star': {
+    icon: '⭐', title: 'Topologi Star', subtitle: 'Terpusat di Switch/Hub',
+    content: `
+<p>Setiap node terhubung langsung ke perangkat pusat (switch atau hub). Ini adalah topologi yang paling umum digunakan saat ini.</p>
+<h3>Cara Kerja</h3>
+<ul>
+  <li>Semua traffic melewati switch/hub pusat</li>
+  <li>Switch menentukan node tujuan menggunakan MAC table</li>
+  <li>Kegagalan satu node tidak mempengaruhi lainnya</li>
+</ul>
+<div class="success-box">✅ Kelebihan: Mudah troubleshoot, satu node mati tidak ganggu lain, mudah tambah node baru, performa baik</div>
+<div class="warning-box">⚠️ Kekurangan: Switch pusat adalah single point of failure. Butuh lebih banyak kabel.</div>
+<h3>Varian Modern</h3>
+<ul>
+  <li><strong>Extended Star</strong> — switch terhubung ke switch lain (hierarkis)</li>
+  <li><strong>Wireless Star</strong> — Access Point sebagai pusat, device wireless sebagai node</li>
+</ul>
+`},
+
+  'topo-ring': {
+    icon: '💍', title: 'Topologi Ring', subtitle: 'Data Mengalir Melingkar',
+    content: `
+<p>Node terhubung membentuk lingkaran tertutup. Data mengalir dalam satu arah (unidirectional) atau dua arah (bidirectional).</p>
+<h3>Cara Kerja</h3>
+<ul>
+  <li>Data berjalan dari node ke node secara berurutan</li>
+  <li>Menggunakan sistem token (token ring) untuk mengontrol akses</li>
+  <li>Setiap node menjadi repeater untuk sinyal</li>
+</ul>
+<div class="info-box">💡 Token Ring (IEEE 802.5) menggunakan token untuk mengontrol siapa yang berhak mengirim, menghindari collision.</div>
+<div class="success-box">✅ Kelebihan: Tidak ada collision karena token-based, performa stabil</div>
+<div class="warning-box">⚠️ Kekurangan: Satu node rusak bisa ganggu seluruh jaringan (FDDI dan dual-ring mengatasi ini)</div>
+<h3>FDDI</h3>
+<p>Fiber Distributed Data Interface menggunakan dual ring — jika satu ring gagal, ring kedua menjadi backup otomatis.</p>
+`},
+
+  'topo-mesh': {
+    icon: '🕸️', title: 'Topologi Mesh', subtitle: 'Redundansi Maksimal',
+    content: `
+<p>Setiap node terhubung langsung ke setiap node lain. Memberikan redundansi dan fault tolerance yang sangat tinggi.</p>
+<h3>Full Mesh vs Partial Mesh</h3>
+<ul>
+  <li><strong>Full Mesh</strong> — setiap node terhubung ke SEMUA node lain. Jumlah koneksi = n(n-1)/2</li>
+  <li><strong>Partial Mesh</strong> — hanya beberapa node yang terhubung penuh, lebih praktis</li>
+</ul>
+<div class="info-box">💡 Untuk 10 node, full mesh membutuhkan 45 koneksi terpisah. Sangat mahal untuk implementasi besar!</div>
+<div class="success-box">✅ Kelebihan: Tidak ada single point of failure, multiple path untuk routing, performa sangat baik</div>
+<div class="warning-box">⚠️ Kekurangan: Biaya sangat tinggi, kompleks untuk dikonfigurasi dan dimanajemen</div>
+<h3>Penggunaan</h3>
+<p>Internet backbone menggunakan topologi mesh parsial. Juga digunakan di data center kritis dan jaringan militer.</p>
+`},
+
+  // PROTOKOL
+  'tcp-ip': {
+    icon: '🌐', title: 'Model TCP/IP', subtitle: '4-Layer Internet Model',
+    content: `
+<p>Model TCP/IP adalah implementasi praktis yang digunakan di internet nyata, lebih sederhana dari OSI 7-layer.</p>
+<h3>Layer TCP/IP</h3>
+<table class="osi-table">
+  <thead><tr><th>Layer</th><th>Nama</th><th>Protokol</th></tr></thead>
+  <tbody>
+    <tr><td>4</td><td>Application</td><td>HTTP, DNS, SMTP, FTP, SSH</td></tr>
+    <tr><td>3</td><td>Transport</td><td>TCP, UDP</td></tr>
+    <tr><td>2</td><td>Internet</td><td>IP, ICMP, ARP, OSPF</td></tr>
+    <tr><td>1</td><td>Network Access</td><td>Ethernet, Wi-Fi, PPP</td></tr>
+  </tbody>
+</table>
+<h3>Proses Enkapsulasi</h3>
+<ul>
+  <li>Application → membuat data/message</li>
+  <li>Transport → menambah TCP/UDP header (segment)</li>
+  <li>Internet → menambah IP header (packet)</li>
+  <li>Network Access → menambah MAC header (frame) → bit</li>
+</ul>
+<div class="info-box">💡 Saat menerima data, proses sebaliknya terjadi (dekapsulasi) — header dilepas satu per satu dari bawah ke atas.</div>
+`},
+
+  'tcp-vs-udp': {
+    icon: '⚖️', title: 'TCP vs UDP', subtitle: 'Transport Layer Protocol',
+    content: `
+<table class="osi-table">
+  <thead><tr><th>Aspek</th><th>TCP</th><th>UDP</th></tr></thead>
+  <tbody>
+    <tr><td>Koneksi</td><td>Connection-oriented</td><td>Connectionless</td></tr>
+    <tr><td>Keandalan</td><td>Guaranteed delivery</td><td>Best-effort</td></tr>
+    <tr><td>Urutan</td><td>In-order delivery</td><td>Tidak dijamin</td></tr>
+    <tr><td>Error Check</td><td>Ya + retransmisi</td><td>Checksum saja</td></tr>
+    <tr><td>Kecepatan</td><td>Lebih lambat</td><td>Lebih cepat</td></tr>
+    <tr><td>Header</td><td>20 byte</td><td>8 byte</td></tr>
+    <tr><td>Flow Control</td><td>Ya (sliding window)</td><td>Tidak</td></tr>
+  </tbody>
+</table>
+<h3>Kapan Menggunakan TCP?</h3>
+<ul>
+  <li>HTTP/HTTPS (web browsing)</li>
+  <li>Email (SMTP, IMAP, POP3)</li>
+  <li>File transfer (FTP, SFTP)</li>
+  <li>SSH, Telnet</li>
+</ul>
+<h3>Kapan Menggunakan UDP?</h3>
+<ul>
+  <li>Video streaming (lebih baik terlambat dari tidak ada)</li>
+  <li>VoIP dan video call</li>
+  <li>Online gaming</li>
+  <li>DNS query (butuh cepat)</li>
+  <li>DHCP, SNMP, TFTP</li>
+</ul>
+<h3>Three-Way Handshake TCP</h3>
+<div class="info-box">Client → SYN → Server<br>Server → SYN-ACK → Client<br>Client → ACK → Server<br>✅ Koneksi terbentuk!</div>
+`},
+
+  'http-https': {
+    icon: '🔗', title: 'HTTP & HTTPS', subtitle: 'Protokol Transfer Web',
+    content: `
+<h3>HTTP (HyperText Transfer Protocol)</h3>
+<p>Protokol stateless di port 80 untuk transfer halaman web. Data dikirim dalam plaintext — tidak aman.</p>
+<h3>HTTPS = HTTP + TLS</h3>
+<p>HTTPS menggunakan TLS (Transport Layer Security) untuk mengenkripsi semua komunikasi di port 443.</p>
+<div class="success-box">✅ HTTPS menjamin: Kerahasiaan data (enkripsi), Integritas (tidak bisa dimodifikasi), Autentikasi server (sertifikat SSL)</div>
+<h3>Versi HTTP</h3>
+<ul>
+  <li><strong>HTTP/1.0</strong> — satu request per koneksi</li>
+  <li><strong>HTTP/1.1</strong> — persistent connection, pipelining</li>
+  <li><strong>HTTP/2</strong> — multiplexing, header compression, lebih cepat</li>
+  <li><strong>HTTP/3</strong> — menggunakan QUIC (UDP-based), mengatasi head-of-line blocking</li>
+</ul>
+<h3>HTTP Methods</h3>
+<div class="tag-row">
+  <span class="tag tag-green">GET</span>
+  <span class="tag tag-cyan">POST</span>
+  <span class="tag tag-amber">PUT</span>
+  <span class="tag tag-purple">PATCH</span>
+  <span class="tag tag-red">DELETE</span>
+</div>
+<h3>HTTP Status Code</h3>
+<ul>
+  <li>2xx — Sukses (200 OK, 201 Created)</li>
+  <li>3xx — Redirect (301, 302)</li>
+  <li>4xx — Client Error (400, 401, 403, 404)</li>
+  <li>5xx — Server Error (500, 502, 503)</li>
+</ul>
+`},
+
+  'dns': {
+    icon: '📖', title: 'DNS — Domain Name System', subtitle: 'Buku Telepon Internet',
+    content: `
+<p>DNS menerjemahkan nama domain yang mudah diingat manusia (google.com) menjadi IP address yang digunakan komputer (142.250.x.x).</p>
+<h3>Proses DNS Query</h3>
+<ul>
+  <li>Browser cek cache lokal</li>
+  <li>Tanya ke OS DNS cache</li>
+  <li>Tanya ke Recursive Resolver (ISP/8.8.8.8)</li>
+  <li>Resolver tanya Root Server (.) </li>
+  <li>Root arahkan ke TLD Server (.com, .id)</li>
+  <li>TLD arahkan ke Authoritative Nameserver</li>
+  <li>Authoritative server kembalikan IP</li>
+</ul>
+<div class="info-box">💡 Seluruh proses di atas terjadi dalam milidetik berkat caching di setiap langkah!</div>
+<h3>Record DNS</h3>
+<ul>
+  <li><strong>A</strong> — domain → IPv4</li>
+  <li><strong>AAAA</strong> — domain → IPv6</li>
+  <li><strong>CNAME</strong> — alias domain</li>
+  <li><strong>MX</strong> — mail server</li>
+  <li><strong>TXT</strong> — verifikasi, SPF, DKIM</li>
+  <li><strong>NS</strong> — nameserver domain</li>
+  <li><strong>PTR</strong> — reverse lookup (IP → domain)</li>
+</ul>
+<h3>DNS Populer</h3>
+<div class="tag-row">
+  <span class="tag tag-cyan">8.8.8.8 (Google)</span>
+  <span class="tag tag-amber">1.1.1.1 (Cloudflare)</span>
+  <span class="tag tag-green">9.9.9.9 (Quad9)</span>
+</div>
+`},
+
+  'dhcp': {
+    icon: '🔧', title: 'DHCP', subtitle: 'Dynamic Host Configuration Protocol',
+    content: `
+<p>DHCP secara otomatis memberikan konfigurasi jaringan (IP, subnet mask, gateway, DNS) kepada client saat bergabung ke jaringan.</p>
+<h3>Proses DORA</h3>
+<ul>
+  <li><strong>D</strong>iscover — Client broadcast mencari DHCP server</li>
+  <li><strong>O</strong>ffer — Server menawarkan IP address tersedia</li>
+  <li><strong>R</strong>equest — Client meminta IP yang ditawarkan</li>
+  <li><strong>A</strong>cknowledge — Server mengonfirmasi pemberian IP</li>
+</ul>
+<div class="info-box">💡 DHCP beroperasi di port UDP 67 (server) dan 68 (client). Broadcast digunakan karena client belum punya IP.</div>
+<h3>Konfigurasi yang Diberikan</h3>
+<ul>
+  <li>IP Address (dengan lease time)</li>
+  <li>Subnet Mask</li>
+  <li>Default Gateway</li>
+  <li>DNS Server</li>
+  <li>Domain Name (opsional)</li>
+  <li>NTP Server (opsional)</li>
+</ul>
+<h3>DHCP Reservation</h3>
+<p>Printer, server, dan perangkat penting sebaiknya menggunakan IP static atau DHCP reservation berdasarkan MAC address agar IP-nya tidak berubah.</p>
+`},
+
+  'arp': {
+    icon: '🔍', title: 'ARP & ICMP', subtitle: 'Layer 3 Protocols',
+    content: `
+<h3>ARP (Address Resolution Protocol)</h3>
+<p>ARP menerjemahkan IP address ke MAC address dalam jaringan lokal.</p>
+<ul>
+  <li>Host broadcast: "Siapa yang punya IP 192.168.1.1?"</li>
+  <li>Pemilik IP membalas dengan MAC addressnya</li>
+  <li>Mapping disimpan di ARP cache</li>
+</ul>
+<div class="warning-box">⚠️ ARP tidak memiliki autentikasi! Ini yang membuat ARP Spoofing sangat mudah dilakukan di jaringan lokal.</div>
+<h3>ICMP (Internet Control Message Protocol)</h3>
+<p>ICMP digunakan untuk diagnostik dan error reporting di jaringan.</p>
+<ul>
+  <li><strong>Ping</strong> — ICMP Echo Request/Reply (uji konektivitas)</li>
+  <li><strong>Traceroute</strong> — menggunakan ICMP TTL exceeded untuk memetakan jalur</li>
+  <li><strong>Destination Unreachable</strong> — host/port tidak tersedia</li>
+  <li><strong>Time Exceeded</strong> — TTL habis (paket dibuang router)</li>
+</ul>
+<h3>TTL (Time To Live)</h3>
+<p>Setiap paket IP punya nilai TTL (biasanya 64, 128, atau 255). Setiap router mengurangi 1. Jika TTL = 0, paket dibuang dan ICMP Time Exceeded dikirim ke pengirim.</p>
+`},
+
+  // PERANGKAT
+  'router': {
+    icon: '📡', title: 'Router', subtitle: 'Layer 3 Networking Device',
+    content: `
+<p>Router bekerja di Layer 3 (Network) dan tugasnya menentukan jalur terbaik untuk mengirimkan paket antar jaringan berbeda.</p>
+<h3>Fungsi Router</h3>
+<ul>
+  <li>Routing — menentukan jalur paket menggunakan routing table</li>
+  <li>Menghubungkan LAN ke WAN/internet</li>
+  <li>NAT (Network Address Translation)</li>
+  <li>Firewall dasar</li>
+  <li>DHCP server (pada router rumahan)</li>
+</ul>
+<h3>Routing Protocol</h3>
+<ul>
+  <li><strong>Static Route</strong> — dikonfigurasi manual oleh admin</li>
+  <li><strong>RIP</strong> — Routing Information Protocol (distance vector, legacy)</li>
+  <li><strong>OSPF</strong> — Open Shortest Path First (link-state, enterprise)</li>
+  <li><strong>EIGRP</strong> — Cisco proprietary, hybrid</li>
+  <li><strong>BGP</strong> — Border Gateway Protocol (internet backbone antar AS)</li>
+</ul>
+<div class="info-box">💡 BGP adalah protokol routing yang menjalankan seluruh internet. ISP menggunakan BGP untuk bertukar informasi routing.</div>
+`},
+
+  'switch': {
+    icon: '🔀', title: 'Switch', subtitle: 'Layer 2 Networking Device',
+    content: `
+<p>Switch bekerja di Layer 2 dan menghubungkan perangkat dalam satu LAN menggunakan MAC address untuk forward paket hanya ke port yang tepat.</p>
+<h3>Cara Kerja</h3>
+<ul>
+  <li>Membangun MAC address table dari frame yang masuk</li>
+  <li>Forward frame hanya ke port tujuan (unicast)</li>
+  <li>Broadcast dikirim ke semua port kecuali sumber</li>
+  <li>Collision domain terpisah per port</li>
+</ul>
+<h3>Tipe Switch</h3>
+<ul>
+  <li><strong>Unmanaged</strong> — plug and play, tidak bisa dikonfigurasi</li>
+  <li><strong>Managed</strong> — bisa dikonfigurasi (VLAN, QoS, spanning tree, port security)</li>
+  <li><strong>Layer 3 Switch</strong> — bisa routing antar VLAN tanpa router</li>
+  <li><strong>PoE Switch</strong> — bisa supply power via Ethernet (untuk IP cam, phone, AP)</li>
+</ul>
+<h3>STP (Spanning Tree Protocol)</h3>
+<p>STP mencegah loop di jaringan dengan memblokir port redundan. Loop di Layer 2 menyebabkan broadcast storm yang bisa melumpuhkan jaringan.</p>
+`},
+
+  'firewall-device': {
+    icon: '🛡️', title: 'Firewall', subtitle: 'Network Security Device',
+    content: `
+<p>Firewall memfilter traffic jaringan berdasarkan aturan (rules) yang ditetapkan admin untuk mengizinkan atau menolak paket.</p>
+<h3>Jenis Firewall</h3>
+<ul>
+  <li><strong>Packet Filtering</strong> — filter berdasarkan IP, port, protokol. Generasi pertama.</li>
+  <li><strong>Stateful Inspection</strong> — melacak state koneksi. Lebih pintar dari packet filtering.</li>
+  <li><strong>Application Layer (WAF)</strong> — memahami protokol aplikasi (HTTP, DNS). Layer 7.</li>
+  <li><strong>Next-Gen Firewall (NGFW)</strong> — IDS/IPS terintegrasi, deep packet inspection, user identity.</li>
+</ul>
+<h3>Konsep Penting</h3>
+<ul>
+  <li><strong>DMZ</strong> — Demilitarized Zone, zona antara internet dan LAN internal</li>
+  <li><strong>Ingress/Egress filtering</strong> — filter traffic masuk dan keluar</li>
+  <li><strong>Default deny</strong> — tolak semua kecuali yang diizinkan eksplisit</li>
+  <li><strong>Stateful vs Stateless</strong> — stateful lebih aman karena tahu konteks koneksi</li>
+</ul>
+<div class="info-box">💡 Vendor NGFW populer: Palo Alto Networks, Fortinet, Check Point, Cisco ASA/Firepower, Sophos</div>
+`},
+
+  'ids-ips': {
+    icon: '👁️', title: 'IDS & IPS', subtitle: 'Intrusion Detection & Prevention',
+    content: `
+<h3>IDS (Intrusion Detection System)</h3>
+<p>IDS memantau traffic dan menghasilkan alert ketika mendeteksi aktivitas mencurigakan. <strong>Hanya mendeteksi, tidak memblokir.</strong></p>
+<h3>IPS (Intrusion Prevention System)</h3>
+<p>IPS sama seperti IDS tetapi juga <strong>aktif memblokir</strong> traffic berbahaya secara real-time. Inline dengan traffic.</p>
+<h3>Metode Deteksi</h3>
+<ul>
+  <li><strong>Signature-based</strong> — membandingkan dengan database pola serangan yang diketahui</li>
+  <li><strong>Anomaly-based</strong> — mendeteksi penyimpangan dari baseline normal</li>
+  <li><strong>Heuristic</strong> — analisis perilaku menggunakan AI/ML</li>
+</ul>
+<h3>NIDS vs HIDS</h3>
+<ul>
+  <li><strong>NIDS</strong> — Network-based, monitor seluruh segmen jaringan</li>
+  <li><strong>HIDS</strong> — Host-based, monitor aktivitas di satu host/server</li>
+</ul>
+<div class="info-box">💡 Tools populer: Snort (open source), Suricata, Zeek, OSSEC (HIDS), Wazuh</div>
+`},
+
+  // IP
+  'ipv4': {
+    icon: '4️⃣', title: 'IPv4 — Internet Protocol v4', subtitle: '32-bit Addressing',
+    content: `
+<p>IPv4 menggunakan 32-bit address, ditulis dalam 4 oktet decimal dipisah titik (dotted decimal notation).</p>
+<div class="info-box">Contoh: <strong>192.168.1.100</strong><br>Binary: 11000000.10101000.00000001.01100100</div>
+<h3>IP Privat (RFC 1918)</h3>
+<ul>
+  <li>10.0.0.0 – 10.255.255.255 (/8)</li>
+  <li>172.16.0.0 – 172.31.255.255 (/12)</li>
+  <li>192.168.0.0 – 192.168.255.255 (/16)</li>
+</ul>
+<h3>IP Khusus</h3>
+<ul>
+  <li><strong>127.0.0.1</strong> — Loopback (localhost)</li>
+  <li><strong>0.0.0.0</strong> — Default route / semua interface</li>
+  <li><strong>255.255.255.255</strong> — Broadcast terbatas</li>
+  <li><strong>169.254.x.x</strong> — APIPA (DHCP gagal)</li>
+</ul>
+<div class="warning-box">⚠️ IPv4 hanya memiliki ~4.3 miliar alamat. Sudah hampir habis! Inilah mengapa IPv6 diperlukan dan NAT digunakan secara luas.</div>
+`},
+
+  'ipv6': {
+    icon: '6️⃣', title: 'IPv6', subtitle: '128-bit Next Generation Addressing',
+    content: `
+<p>IPv6 menggunakan 128-bit address, ditulis dalam 8 grup hexadecimal 4-digit dipisah titik dua.</p>
+<div class="info-box">Contoh: <strong>2001:0db8:85a3:0000:0000:8a2e:0370:7334</strong><br>Bisa disingkat: <strong>2001:db8:85a3::8a2e:370:7334</strong></div>
+<h3>Jumlah Alamat</h3>
+<p>IPv6 menyediakan 3.4 × 10³⁸ alamat — cukup untuk setiap atom di Bumi mendapatkan beberapa alamat IP!</p>
+<h3>Keunggulan IPv6</h3>
+<ul>
+  <li>Ruang alamat hampir tak terbatas</li>
+  <li>Auto-konfigurasi (SLAAC) tanpa DHCP</li>
+  <li>Built-in IPsec untuk keamanan</li>
+  <li>Tidak perlu NAT</li>
+  <li>Header lebih sederhana, routing lebih efisien</li>
+  <li>Multicast menggantikan broadcast</li>
+</ul>
+<h3>Tipe Alamat IPv6</h3>
+<ul>
+  <li><strong>Unicast Global</strong> — 2000::/3 (routable di internet)</li>
+  <li><strong>Link-Local</strong> — fe80::/10 (hanya dalam satu link)</li>
+  <li><strong>Loopback</strong> — ::1</li>
+  <li><strong>Multicast</strong> — ff00::/8</li>
+</ul>
+`},
+
+  'subnetting': {
+    icon: '✂️', title: 'Subnetting', subtitle: 'Membagi Jaringan',
+    content: `
+<p>Subnetting adalah proses membagi satu network address menjadi beberapa subnet yang lebih kecil menggunakan subnet mask.</p>
+<h3>Mengapa Subnetting?</h3>
+<ul>
+  <li>Efisiensi penggunaan IP address</li>
+  <li>Mengurangi broadcast domain</li>
+  <li>Meningkatkan keamanan (isolasi antar subnet)</li>
+  <li>Manajemen jaringan lebih mudah</li>
+</ul>
+<h3>Contoh Subnetting</h3>
+<div class="info-box">
+  Network: <strong>192.168.1.0/24</strong><br>
+  Dibagi menjadi 4 subnet (/26):<br><br>
+  Subnet 1: 192.168.1.0/26 (host: .1–.62, broadcast: .63)<br>
+  Subnet 2: 192.168.1.64/26 (host: .65–.126, broadcast: .127)<br>
+  Subnet 3: 192.168.1.128/26 (host: .129–.190, broadcast: .191)<br>
+  Subnet 4: 192.168.1.192/26 (host: .193–.254, broadcast: .255)
+</div>
+<h3>Rumus Penting</h3>
+<ul>
+  <li>Jumlah subnet: 2ⁿ (n = bit yang dipinjam)</li>
+  <li>Jumlah host per subnet: 2ʰ – 2 (h = host bit)</li>
+  <li>Subnet mask /26 = 255.255.255.192</li>
+</ul>
+`},
+
+  'nat': {
+    icon: '🔄', title: 'NAT & PAT', subtitle: 'Network Address Translation',
+    content: `
+<p>NAT menerjemahkan IP privat menjadi IP publik saat paket keluar ke internet, dan sebaliknya saat paket masuk.</p>
+<h3>Jenis NAT</h3>
+<ul>
+  <li><strong>Static NAT</strong> — satu IP privat dipetakan ke satu IP publik permanen</li>
+  <li><strong>Dynamic NAT</strong> — IP privat dipetakan ke IP publik dari pool</li>
+  <li><strong>PAT (Port Address Translation)</strong> — banyak IP privat berbagi SATU IP publik menggunakan port berbeda. Ini yang paling umum!</li>
+</ul>
+<div class="info-box">💡 PAT juga disebut NAT Overload. Ini yang membuat seluruh rumah (banyak device) bisa berbagi satu IP publik dari ISP.</div>
+<h3>Cara Kerja PAT</h3>
+<ul>
+  <li>Host 192.168.1.10:54321 → NAT → 203.0.113.5:10001</li>
+  <li>Host 192.168.1.11:65432 → NAT → 203.0.113.5:10002</li>
+  <li>NAT table menyimpan mapping ini</li>
+</ul>
+<div class="warning-box">⚠️ NAT menyulitkan peer-to-peer dan hosting server dari dalam jaringan. Perlu port forwarding untuk mengatasi ini.</div>
+`},
+
+  // KEAMANAN
+  'ddos': {
+    icon: '💥', title: 'DDoS Attack', subtitle: 'Distributed Denial of Service',
+    content: `
+<p>DDoS membanjiri target dengan traffic dari ribuan hingga jutaan sumber (botnet) secara bersamaan hingga layanan tidak bisa diakses pengguna legit.</p>
+<h3>Jenis DDoS</h3>
+<ul>
+  <li><strong>Volumetric</strong> — membanjiri bandwidth (UDP flood, ICMP flood, DNS amplification). Ukuran: Gbps/Tbps</li>
+  <li><strong>Protocol</strong> — menghabiskan resource server/firewall (SYN flood, Ping of Death)</li>
+  <li><strong>Application Layer (L7)</strong> — HTTP flood, slowloris — menyerang logika aplikasi</li>
+</ul>
+<h3>Cara Kerja SYN Flood</h3>
+<div class="warning-box">Penyerang kirim ribuan SYN tanpa SYN-ACK balasan → Server menyimpan half-open connection → Resource habis → Server crash!</div>
+<h3>Cara Pencegahan</h3>
+<ul>
+  <li>Rate limiting dan traffic filtering</li>
+  <li>Anycast diffusion (Cloudflare, Akamai)</li>
+  <li>Blackholing / null routing</li>
+  <li>SYN cookies untuk mengatasi SYN flood</li>
+  <li>DDoS scrubbing center</li>
+  <li>CDN dan load balancer</li>
+</ul>
+<div class="tag-row">
+  <span class="tag tag-red">Volumetric</span>
+  <span class="tag tag-red">Protocol</span>
+  <span class="tag tag-amber">L7 Attack</span>
+</div>
+`},
+
+  'mitm': {
+    icon: '🕵️', title: 'Man-in-the-Middle Attack', subtitle: 'Penyadapan & Manipulasi',
+    content: `
+<p>Penyerang memposisikan diri di antara dua pihak yang berkomunikasi, bisa membaca, mengubah, atau menyisipkan data secara diam-diam.</p>
+<h3>Teknik MitM</h3>
+<ul>
+  <li><strong>ARP Spoofing</strong> — memanipulasi ARP cache di LAN</li>
+  <li><strong>DNS Spoofing</strong> — memanipulasi respons DNS</li>
+  <li><strong>SSL Stripping</strong> — downgrade HTTPS ke HTTP</li>
+  <li><strong>Evil Twin Wi-Fi</strong> — AP palsu dengan nama sama</li>
+  <li><strong>BGP Hijacking</strong> — memanipulasi routing internet</li>
+</ul>
+<h3>Dampak</h3>
+<ul>
+  <li>Pencurian kredensial (username, password)</li>
+  <li>Session hijacking</li>
+  <li>Injeksi malware ke traffic</li>
+  <li>Pencurian data sensitif</li>
+</ul>
+<h3>Pencegahan</h3>
+<ul>
+  <li>Selalu gunakan HTTPS (periksa padlock)</li>
+  <li>Certificate pinning di aplikasi mobile</li>
+  <li>VPN di jaringan publik</li>
+  <li>HSTS (HTTP Strict Transport Security)</li>
+  <li>Dynamic ARP Inspection di switch</li>
+</ul>
+`},
+
+  'phishing': {
+    icon: '🎣', title: 'Phishing Attack', subtitle: 'Rekayasa Sosial via Email/Web',
+    content: `
+<p>Phishing menggunakan email atau website palsu yang menyerupai sumber terpercaya untuk menipu korban memberikan informasi sensitif.</p>
+<h3>Jenis Phishing</h3>
+<ul>
+  <li><strong>Email Phishing</strong> — email massal ke banyak orang</li>
+  <li><strong>Spear Phishing</strong> — ditargetkan ke individu/organisasi tertentu, lebih canggih</li>
+  <li><strong>Whaling</strong> — spear phishing yang menarget eksekutif senior</li>
+  <li><strong>Smishing</strong> — via SMS</li>
+  <li><strong>Vishing</strong> — via telepon</li>
+  <li><strong>Clone Phishing</strong> — menduplikasi email legit dengan link berbahaya</li>
+</ul>
+<h3>Tanda-tanda Phishing</h3>
+<ul>
+  <li>Urgensi atau ancaman ("akun Anda akan ditutup!")</li>
+  <li>Link URL yang mencurigakan atau typo (g00gle.com)</li>
+  <li>Sender address palsu atau tidak sesuai</li>
+  <li>Attachment yang tidak diminta</li>
+  <li>Request informasi sensitif via email</li>
+</ul>
+<h3>Pencegahan</h3>
+<ul>
+  <li>Verifikasi sender sebelum klik link</li>
+  <li>Hover link untuk melihat URL asli</li>
+  <li>Enable MFA di semua akun</li>
+  <li>Email security gateway (SPF, DKIM, DMARC)</li>
+  <li>Pelatihan kesadaran keamanan karyawan</li>
+</ul>
+`},
+
+  'sql-injection': {
+    icon: '💉', title: 'SQL Injection', subtitle: 'Database Attack',
+    content: `
+<p>SQL Injection menyisipkan perintah SQL berbahaya melalui input form untuk memanipulasi database — mengambil, mengubah, atau menghapus data.</p>
+<h3>Contoh Sederhana</h3>
+<div class="warning-box">
+Input username: admin' OR '1'='1<br><br>
+Query yang terbentuk:<br>
+SELECT * FROM users WHERE username='admin' OR '1'='1'<br><br>
+→ '1'='1' selalu true → bypass login!
+</div>
+<h3>Jenis SQL Injection</h3>
+<ul>
+  <li><strong>In-band</strong> — hasil langsung tampil (error-based, union-based)</li>
+  <li><strong>Blind</strong> — tidak ada output, inference dari perilaku (boolean, time-based)</li>
+  <li><strong>Out-of-band</strong> — data dikirim ke server lain</li>
+</ul>
+<h3>Dampak</h3>
+<ul>
+  <li>Bypass autentikasi</li>
+  <li>Pencurian seluruh database (kredensial, data pribadi)</li>
+  <li>Menghapus atau memodifikasi data</li>
+  <li>Remote code execution (xp_cmdshell di MSSQL)</li>
+</ul>
+<h3>Pencegahan</h3>
+<ul>
+  <li>Parameterized queries / Prepared statements — WAJIB!</li>
+  <li>Input validation dan sanitasi</li>
+  <li>Principle of least privilege untuk DB user</li>
+  <li>WAF (Web Application Firewall)</li>
+  <li>Error handling yang aman (jangan tampilkan error DB)</li>
+</ul>
+`},
+
+  'arp-spoofing': {
+    icon: '🎭', title: 'ARP Spoofing', subtitle: 'Layer 2 Attack',
+    content: `
+<p>Penyerang mengirimkan ARP reply palsu ke jaringan untuk memanipulasi ARP cache, mengalihkan traffic melalui perangkat mereka.</p>
+<h3>Cara Kerja</h3>
+<ul>
+  <li>Penyerang broadcast: "IP 192.168.1.1 ada di MAC penyerang"</li>
+  <li>Semua host memperbarui ARP cache mereka</li>
+  <li>Traffic yang harusnya ke router, kini lewat penyerang</li>
+  <li>Penyerang bisa baca, ubah, atau drop traffic (MitM)</li>
+</ul>
+<div class="warning-box">⚠️ ARP tidak punya mekanisme autentikasi, sehingga siapapun di jaringan lokal bisa melakukan ini!</div>
+<h3>Tools yang Digunakan Penyerang</h3>
+<div class="tag-row">
+  <span class="tag tag-red">arpspoof</span>
+  <span class="tag tag-red">Ettercap</span>
+  <span class="tag tag-red">Bettercap</span>
+</div>
+<h3>Pencegahan</h3>
+<ul>
+  <li><strong>Dynamic ARP Inspection (DAI)</strong> di managed switch</li>
+  <li>Port security membatasi MAC per port</li>
+  <li>DHCP Snooping (binding tabel IP-MAC)</li>
+  <li>Enkripsi traffic (TLS/HTTPS)</li>
+  <li>Static ARP untuk perangkat kritis</li>
+  <li>XDR/EDR yang bisa deteksi anomali ARP</li>
+</ul>
+`},
+
+  'ransomware': {
+    icon: '🔒', title: 'Ransomware', subtitle: 'Malware Enkripsi Data',
+    content: `
+<p>Ransomware mengenkripsi file korban dan meminta pembayaran tebusan (biasanya cryptocurrency) untuk mendapatkan kunci dekripsi.</p>
+<h3>Cara Penyebaran</h3>
+<ul>
+  <li>Email phishing dengan attachment berbahaya</li>
+  <li>Exploit kit yang menyerang kerentanan software</li>
+  <li>RDP yang terekspose ke internet</li>
+  <li>Pivot dari sistem yang sudah dikompromis</li>
+  <li>Malvertising (iklan berbahaya)</li>
+</ul>
+<h3>Contoh Terkenal</h3>
+<ul>
+  <li><strong>WannaCry (2017)</strong> — menyebar via SMB exploit EternalBlue, infeksi 200.000+ komputer</li>
+  <li><strong>NotPetya (2017)</strong> — diklasifikasi sebagai cyber weapon, kerugian $10 miliar</li>
+  <li><strong>REvil, Conti, LockBit</strong> — ransomware-as-a-service modern</li>
+</ul>
+<div class="warning-box">⚠️ Membayar tebusan TIDAK menjamin file dikembalikan dan mendanai aktivitas kriminal lebih lanjut!</div>
+<h3>Pencegahan & Recovery</h3>
+<ul>
+  <li>Backup reguler dengan strategi 3-2-1 (offline backup!)</li>
+  <li>Patch sistem secara rutin</li>
+  <li>Disable RDP jika tidak perlu, atau gunakan VPN</li>
+  <li>Email filtering yang kuat</li>
+  <li>EDR (Endpoint Detection and Response)</li>
+  <li>Network segmentation untuk membatasi lateral movement</li>
+</ul>
+`},
+
+  'dns-poisoning': {
+    icon: '☠️', title: 'DNS Cache Poisoning', subtitle: 'DNS Spoofing',
+    content: `
+<p>Penyerang memasukkan informasi DNS palsu ke cache resolver, mengarahkan pengguna ke situs berbahaya meski mengetik URL yang benar.</p>
+<h3>Cara Kerja</h3>
+<ul>
+  <li>Penyerang kirim respons DNS palsu sebelum server asli menjawab</li>
+  <li>Cache resolver menyimpan record palsu</li>
+  <li>Semua pengguna yang tanya resolver ini mendapat IP palsu</li>
+  <li>Pengguna diarahkan ke situs phishing/malware</li>
+</ul>
+<h3>Pencegahan</h3>
+<ul>
+  <li><strong>DNSSEC</strong> — menambahkan tanda tangan kriptografi ke record DNS</li>
+  <li>DNS over HTTPS (DoH) atau DNS over TLS (DoT)</li>
+  <li>Randomisasi port sumber dan transaction ID</li>
+  <li>Short TTL untuk record kritis</li>
+</ul>
+`},
+
+  'xss': {
+    icon: '💻', title: 'Cross-Site Scripting (XSS)', subtitle: 'Web Application Attack',
+    content: `
+<p>XSS menyisipkan script berbahaya (biasanya JavaScript) ke halaman web yang kemudian dieksekusi oleh browser pengguna lain.</p>
+<h3>Jenis XSS</h3>
+<ul>
+  <li><strong>Reflected XSS</strong> — script di URL, langsung dieksekusi (tidak tersimpan)</li>
+  <li><strong>Stored XSS</strong> — script tersimpan di database server, paling berbahaya</li>
+  <li><strong>DOM-based XSS</strong> — memanipulasi DOM browser tanpa server involvement</li>
+</ul>
+<h3>Dampak</h3>
+<ul>
+  <li>Pencurian session cookie → account takeover</li>
+  <li>Keylogging input pengguna</li>
+  <li>Redirect ke situs berbahaya</li>
+  <li>Defacement halaman</li>
+</ul>
+<h3>Pencegahan</h3>
+<ul>
+  <li>Escape/encode output HTML, JS, URL dengan benar</li>
+  <li>Content Security Policy (CSP) header</li>
+  <li>HTTPOnly flag pada cookie</li>
+  <li>Input validation di server-side</li>
+  <li>WAF dengan ruleset XSS</li>
+</ul>
+`},
+
+  'port-scanning': {
+    icon: '🔍', title: 'Port Scanning', subtitle: 'Reconnaissance Technique',
+    content: `
+<p>Port scanning adalah teknik mengidentifikasi port yang terbuka pada host target untuk menemukan layanan yang berjalan dan potensi kerentanan.</p>
+<h3>Jenis Scan (Nmap)</h3>
+<ul>
+  <li><strong>TCP Connect Scan</strong> — 3-way handshake penuh, mudah terdeteksi</li>
+  <li><strong>SYN (Stealth) Scan</strong> — kirim SYN, tunggu SYN-ACK, langsung RST. Lebih tersembunyi</li>
+  <li><strong>UDP Scan</strong> — untuk port UDP seperti DNS, SNMP</li>
+  <li><strong>NULL/FIN/Xmas Scan</strong> — bypass beberapa firewall</li>
+  <li><strong>OS Detection</strong> — mendeteksi sistem operasi target</li>
+</ul>
+<div class="info-box">💡 Nmap adalah tool port scanning paling populer. Digunakan oleh penetration tester dan juga penyerang.</div>
+<h3>Pencegahan</h3>
+<ul>
+  <li>Firewall yang hanya buka port yang diperlukan</li>
+  <li>IDS/IPS untuk deteksi scan activity</li>
+  <li>Port knocking</li>
+  <li>Rate limiting koneksi</li>
+</ul>
+`},
+
+  // PERTAHANAN
+  'defense-firewall': {
+    icon: '🔥', title: 'Firewall Rules & Best Practices', subtitle: 'Pertahanan Layer Jaringan',
+    content: `
+<h3>Prinsip Default Deny</h3>
+<p>Tolak semua traffic kecuali yang secara eksplisit diizinkan. Lebih aman dari default allow.</p>
+<h3>Arsitektur Firewall</h3>
+<ul>
+  <li><strong>Screened subnet / DMZ</strong> — server publik (web, email) di zona terpisah antara internet dan LAN</li>
+  <li><strong>Dual firewall</strong> — firewall luar (internet↔DMZ) dan firewall dalam (DMZ↔LAN)</li>
+</ul>
+<h3>Best Practices Rules</h3>
+<ul>
+  <li>Buka hanya port yang benar-benar diperlukan</li>
+  <li>Block traffic dari/ke negara yang tidak relevan (geo-blocking)</li>
+  <li>Log semua traffic yang diblokir untuk analisis</li>
+  <li>Review dan audit rules secara berkala</li>
+  <li>Pisahkan rule untuk inbound, outbound, dan inter-zone</li>
+</ul>
+<div class="info-box">💡 Port penting yang sering diserang: 22 (SSH), 3389 (RDP), 445 (SMB), 3306 (MySQL). Ganti ke port non-standar atau sembunyikan di balik VPN.</div>
+`},
+
+  'defense-encrypt': {
+    icon: '🔐', title: 'Enkripsi Data', subtitle: 'Melindungi Data in Transit & at Rest',
+    content: `
+<h3>Enkripsi Simetris</h3>
+<p>Kunci yang sama untuk enkripsi dan dekripsi. Cepat, cocok untuk data dalam jumlah besar.</p>
+<ul>
+  <li><strong>AES-256</strong> — standar emas, digunakan di mana-mana</li>
+  <li><strong>ChaCha20</strong> — alternatif AES, efisien di perangkat mobile</li>
+</ul>
+<h3>Enkripsi Asimetris</h3>
+<p>Public key untuk enkripsi, private key untuk dekripsi. Lebih lambat, digunakan untuk key exchange dan tanda tangan digital.</p>
+<ul>
+  <li><strong>RSA-2048/4096</strong> — standar lama, masih aman</li>
+  <li><strong>ECDSA/EdDSA</strong> — lebih efisien, digunakan di TLS modern</li>
+</ul>
+<h3>TLS (Transport Layer Security)</h3>
+<p>TLS mengenkripsi semua komunikasi HTTPS. TLS 1.3 adalah versi terbaru — lebih cepat dan aman dari 1.2.</p>
+<div class="warning-box">⚠️ TLS 1.0 dan 1.1 sudah deprecated! TLS 1.2 minimum, TLS 1.3 disarankan.</div>
+<h3>Enkripsi at Rest</h3>
+<ul>
+  <li>Full Disk Encryption (BitLocker, FileVault, LUKS)</li>
+  <li>Database encryption (Transparent Data Encryption)</li>
+  <li>File-level encryption untuk dokumen sensitif</li>
+</ul>
+`},
+
+  'defense-vpn': {
+    icon: '🌐', title: 'VPN & Zero Trust Architecture', subtitle: 'Keamanan Akses',
+    content: `
+<h3>VPN untuk Keamanan</h3>
+<ul>
+  <li>Remote access VPN untuk karyawan WFH</li>
+  <li>Site-to-site VPN untuk menghubungkan kantor</li>
+  <li>Selalu aktifkan di jaringan publik (kafe, hotel, bandara)</li>
+</ul>
+<h3>Zero Trust Architecture</h3>
+<p>Prinsip: <strong>"Never Trust, Always Verify"</strong> — tidak ada perangkat atau pengguna yang dipercaya secara otomatis, meski sudah di dalam jaringan.</p>
+<ul>
+  <li>Verifikasi identitas setiap akses</li>
+  <li>Least privilege — berikan akses minimum yang diperlukan</li>
+  <li>Micro-segmentation</li>
+  <li>Continuous monitoring</li>
+  <li>Assume breach — selalu asumsikan sudah ada yang terkompromi</li>
+</ul>
+<div class="info-box">💡 Zero Trust menjadi standar keamanan modern terutama setelah pandemi COVID-19 mempercepat adopsi remote work.</div>
+<h3>Implementasi Zero Trust</h3>
+<ul>
+  <li>Identity Provider (IdP) — Okta, Azure AD</li>
+  <li>Multi-Factor Authentication wajib</li>
+  <li>Device trust — hanya managed device yang bisa akses</li>
+  <li>Conditional Access Policy</li>
+</ul>
+`},
+
+  'defense-2fa': {
+    icon: '🔑', title: 'Multi-Factor Authentication', subtitle: 'Lapisan Keamanan Tambahan',
+    content: `
+<p>MFA mengharuskan lebih dari satu bukti identitas sebelum memberikan akses. Bahkan jika password dicuri, penyerang tetap tidak bisa masuk.</p>
+<h3>Faktor Autentikasi</h3>
+<ul>
+  <li><strong>Something you know</strong> — password, PIN, pertanyaan keamanan</li>
+  <li><strong>Something you have</strong> — OTP app (TOTP), SMS OTP, hardware token (YubiKey)</li>
+  <li><strong>Something you are</strong> — biometrik (sidik jari, wajah, iris)</li>
+</ul>
+<h3>Jenis MFA (dari kurang ke paling aman)</h3>
+<ul>
+  <li>SMS OTP — paling umum, rentan SIM swapping</li>
+  <li>Email OTP — rentan jika email dikompromis</li>
+  <li>TOTP (Google Auth, Authy) — lebih aman</li>
+  <li>Push notification (Duo, Microsoft Authenticator)</li>
+  <li>Hardware key (YubiKey/FIDO2) — paling aman, tahan phishing</li>
+  <li>Passkey — standar baru, passwordless</li>
+</ul>
+<div class="success-box">✅ MFA dapat memblokir 99.9% serangan account takeover menurut Microsoft!</div>
+`},
+
+  'defense-ids': {
+    icon: '👁️', title: 'IDS/IPS & SIEM', subtitle: 'Monitoring & Response',
+    content: `
+<h3>SIEM (Security Information & Event Management)</h3>
+<p>SIEM mengumpulkan, mengkorelasikan, dan menganalisis log dari seluruh infrastruktur untuk mendeteksi ancaman.</p>
+<ul>
+  <li>Agregasi log dari firewall, server, endpoint, network</li>
+  <li>Korelasi event untuk deteksi pola serangan</li>
+  <li>Alerting real-time ke tim SOC</li>
+  <li>Forensik dan analisis insiden</li>
+  <li>Compliance reporting</li>
+</ul>
+<div class="info-box">💡 Platform SIEM populer: Splunk, Microsoft Sentinel, IBM QRadar, Elastic SIEM (open source)</div>
+<h3>SOC (Security Operations Center)</h3>
+<p>Tim yang memantau SIEM dan IDS/IPS 24/7 untuk mendeteksi dan merespons insiden keamanan secara real-time.</p>
+<h3>SOAR</h3>
+<p>Security Orchestration, Automation and Response — otomatiskan respons terhadap insiden umum untuk mempercepat response time.</p>
+`},
+
+  'defense-backup': {
+    icon: '💾', title: 'Backup & Disaster Recovery', subtitle: 'Strategi Pemulihan',
+    content: `
+<h3>Strategi 3-2-1 Backup</h3>
+<ul>
+  <li><strong>3</strong> salinan data</li>
+  <li><strong>2</strong> jenis media berbeda (disk + cloud)</li>
+  <li><strong>1</strong> salinan offsite / offline</li>
+</ul>
+<div class="success-box">✅ Offline backup (air-gapped) tidak bisa dienkripsi ransomware karena tidak terhubung ke jaringan!</div>
+<h3>Konsep Penting</h3>
+<ul>
+  <li><strong>RTO</strong> — Recovery Time Objective: berapa lama maksimal bisa downtime</li>
+  <li><strong>RPO</strong> — Recovery Point Objective: berapa lama maksimal data bisa hilang</li>
+  <li><strong>Full Backup</strong> — backup semua data</li>
+  <li><strong>Incremental</strong> — hanya perubahan sejak backup terakhir</li>
+  <li><strong>Differential</strong> — perubahan sejak full backup terakhir</li>
+</ul>
+<h3>Disaster Recovery Plan (DRP)</h3>
+<ul>
+  <li>Dokumentasikan langkah-langkah recovery</li>
+  <li>Test DR plan secara berkala (tabletop exercise)</li>
+  <li>Designate hot/warm/cold standby site</li>
+  <li>Komunikasi krisis — siapa yang dihubungi?</li>
+</ul>
+`},
+
+  'defense-segment': {
+    icon: '🔀', title: 'Segmentasi Jaringan', subtitle: 'Membatasi Damage Radius',
+    content: `
+<p>Segmentasi membagi jaringan menjadi zona-zona terpisah sehingga jika satu zona dikompromis, penyerang sulit bergerak lateral ke zona lain.</p>
+<h3>Metode Segmentasi</h3>
+<ul>
+  <li><strong>VLAN</strong> — segmentasi Layer 2 di switch</li>
+  <li><strong>DMZ</strong> — zona untuk server yang perlu akses publik</li>
+  <li><strong>Micro-segmentation</strong> — segmentasi hingga level workload/VM</li>
+  <li><strong>Zero Trust Network Access (ZTNA)</strong> — akses per aplikasi, bukan per jaringan</li>
+</ul>
+<h3>Zona Jaringan Umum</h3>
+<ul>
+  <li><strong>Internet Zone</strong> — tidak dipercaya</li>
+  <li><strong>DMZ</strong> — server publik (web, email)</li>
+  <li><strong>Internal Zone</strong> — LAN karyawan</li>
+  <li><strong>Management Zone</strong> — akses admin perangkat jaringan</li>
+  <li><strong>OT/ICS Zone</strong> — sistem kontrol industri, air-gapped</li>
+</ul>
+<div class="info-box">💡 Lateral movement adalah teknik penyerang bergerak dari satu sistem ke sistem lain setelah initial access. Segmentasi adalah pertahanan terbaik!</div>
+`},
+
+  'defense-patch': {
+    icon: '🔧', title: 'Patch Management', subtitle: 'Menutup Celah Keamanan',
+    content: `
+<p>80% breach mengeksploitasi kerentanan yang sudah ada patchnya! Patch management yang disiplin adalah salah satu kontrol keamanan paling efektif.</p>
+<h3>Proses Patch Management</h3>
+<ul>
+  <li>Inventaris semua aset (hardware dan software)</li>
+  <li>Monitor vulnerability disclosure (CVE, vendor advisory)</li>
+  <li>Evaluasi risiko dan prioritaskan patch</li>
+  <li>Test patch di lingkungan staging</li>
+  <li>Deploy ke production dengan change management</li>
+  <li>Verifikasi patch berhasil diaplikasikan</li>
+</ul>
+<div class="warning-box">⚠️ EternalBlue (exploit yang dipakai WannaCry) mengeksploitasi CVE yang sudah dipatch Microsoft 2 bulan sebelumnya!</div>
+<h3>Tools Patch Management</h3>
+<ul>
+  <li>Windows: WSUS, SCCM, Intune</li>
+  <li>Linux: unattended-upgrades, yum-cron</li>
+  <li>Multi-platform: Qualys, Rapid7, Tenable</li>
+</ul>
+<h3>Vulnerability Scanning</h3>
+<p>Lakukan vulnerability scan secara reguler (minimal bulanan) untuk menemukan kerentanan sebelum penyerang menemukannya.</p>
+`},
+
+  'defense-pentest': {
+    icon: '🧪', title: 'Penetration Testing', subtitle: 'Ethical Hacking',
+    content: `
+<p>Penetration testing adalah simulasi serangan terotorisasi terhadap sistem untuk menemukan kerentanan sebelum penyerang nyata menemukannya.</p>
+<h3>Metodologi</h3>
+<ul>
+  <li><strong>Reconnaissance</strong> — pengumpulan informasi (OSINT, scanning)</li>
+  <li><strong>Scanning & Enumeration</strong> — port scan, service enumeration</li>
+  <li><strong>Exploitation</strong> — mengeksploitasi kerentanan yang ditemukan</li>
+  <li><strong>Post-exploitation</strong> — privilege escalation, lateral movement</li>
+  <li><strong>Reporting</strong> — dokumentasi temuan dan rekomendasi</li>
+</ul>
+<h3>Tipe Pentest</h3>
+<ul>
+  <li><strong>Black Box</strong> — tanpa informasi awal (simulasi penyerang luar)</li>
+  <li><strong>White Box</strong> — dengan akses penuh (source code, diagram)</li>
+  <li><strong>Grey Box</strong> — informasi parsial</li>
+</ul>
+<h3>Tools Populer</h3>
+<div class="tag-row">
+  <span class="tag tag-purple">Nmap</span>
+  <span class="tag tag-purple">Metasploit</span>
+  <span class="tag tag-purple">Burp Suite</span>
+  <span class="tag tag-purple">Wireshark</span>
+  <span class="tag tag-cyan">Kali Linux</span>
+  <span class="tag tag-cyan">Nessus</span>
+</div>
+<div class="success-box">✅ Selalu pastikan ada scope dan authorization yang jelas sebelum melakukan pentest. Tanpa izin = ilegal!</div>
+`},
+
+  'jenis-jaringan-overview': {
+    icon: '🗺️', title: 'Jenis-Jenis Jaringan Komputer', subtitle: 'Overview',
+    content: `
+<h3>Berdasarkan Cakupan</h3>
+<table class="osi-table">
+  <thead><tr><th>Jenis</th><th>Cakupan</th><th>Kecepatan</th><th>Contoh</th></tr></thead>
+  <tbody>
+    <tr><td>PAN</td><td>&lt;10 m</td><td>~3 Mbps</td><td>Bluetooth, NFC</td></tr>
+    <tr><td>LAN</td><td>&lt;1 km</td><td>1–100 Gbps</td><td>Kantor, Rumah</td></tr>
+    <tr><td>MAN</td><td>1–100 km</td><td>10–100 Gbps</td><td>Jaringan kota</td></tr>
+    <tr><td>WAN</td><td>Global</td><td>Bervariasi</td><td>Internet</td></tr>
+  </tbody>
+</table>
+`},
+};
+
+// ─── NAVIGATION ────────────────────────────────────────────────────────────
+const sections = ['overview','jenis','topologi','protokol','perangkat','ip','layanan','keamanan','pertahanan'];
+const bottomItems = document.querySelectorAll('.bottom-nav-item');
+const menuItems = document.querySelectorAll('.menu-item');
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+
+function showSection(name) {
+  sections.forEach(s => {
+    document.getElementById('section-'+s)?.classList.remove('active');
+  });
+  document.getElementById('section-'+name)?.classList.add('active');
+
+  bottomItems.forEach(el => el.classList.remove('active'));
+  document.querySelector(`.bottom-nav-item[data-section="${name}"]`)?.classList.add('active');
+
+  menuItems.forEach(el => el.classList.remove('active'));
+  document.querySelector(`.menu-item[data-section="${name}"]`)?.classList.add('active');
+
+  closeMobileMenu();
+  window.scrollTo(0, 0);
+}
+
+bottomItems.forEach(btn => {
+  btn.addEventListener('click', () => showSection(btn.dataset.section));
+});
+
+menuItems.forEach(item => {
+  item.addEventListener('click', () => showSection(item.dataset.section));
+});
+
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('open');
+  mobileMenu.classList.toggle('open');
+});
+
+function closeMobileMenu() {
+  hamburger.classList.remove('open');
+  mobileMenu.classList.remove('open');
+}
+
+// ─── MODAL ─────────────────────────────────────────────────────────────────
+function showDetail(id) {
+  const d = details[id];
+  if (!d) return;
+  document.getElementById('modalBody').innerHTML = `
+    <div class="modal-icon">${d.icon}</div>
+    <div class="modal-title">${d.title}</div>
+    <div class="modal-subtitle">${d.subtitle}</div>
+    <div class="modal-body">${d.content}</div>
+  `;
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) {
+  if (e === true || e.target === document.getElementById('modalOverlay')) {
+    document.getElementById('modalOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+}
+
+// ─── SEARCH ────────────────────────────────────────────────────────────────
+const allCards = [
+  { keywords: ['apa','jaringan','definisi','sejarah'], section: 'overview', action: () => showDetail('apa-itu') },
+  { keywords: ['lan','local','lokal'], section: 'jenis', action: () => { showSection('jenis'); setTimeout(()=>showDetail('lan'),100); }},
+  { keywords: ['wan','wide','global'], section: 'jenis', action: () => { showSection('jenis'); setTimeout(()=>showDetail('wan'),100); }},
+  { keywords: ['ddos','denial','serangan'], section: 'keamanan', action: () => { showSection('keamanan'); setTimeout(()=>showDetail('ddos'),100); }},
+  { keywords: ['phishing','penipuan','email'], section: 'keamanan', action: () => { showSection('keamanan'); setTimeout(()=>showDetail('phishing'),100); }},
+  { keywords: ['dns'], section: 'protokol', action: () => { showSection('protokol'); setTimeout(()=>showDetail('dns'),100); }},
+  { keywords: ['tcp','udp'], section: 'protokol', action: () => { showSection('protokol'); setTimeout(()=>showDetail('tcp-vs-udp'),100); }},
+  { keywords: ['firewall'], section: 'perangkat', action: () => { showSection('perangkat'); setTimeout(()=>showDetail('firewall-device'),100); }},
+  { keywords: ['vpn','virtual','private'], section: 'jenis', action: () => { showSection('jenis'); setTimeout(()=>showDetail('vpn'),100); }},
+  { keywords: ['subnetting','subnet'], section: 'ip', action: () => { showSection('ip'); setTimeout(()=>showDetail('subnetting'),100); }},
+  { keywords: ['ransomware','enkripsi','malware'], section: 'keamanan', action: () => { showSection('keamanan'); setTimeout(()=>showDetail('ransomware'),100); }},
+  { keywords: ['router','routing'], section: 'perangkat', action: () => { showSection('perangkat'); setTimeout(()=>showDetail('router'),100); }},
+  { keywords: ['switch'], section: 'perangkat', action: () => { showSection('perangkat'); setTimeout(()=>showDetail('switch'),100); }},
+  { keywords: ['osi','layer','model'], section: 'protokol', action: () => showSection('protokol') },
+  { keywords: ['backup','recovery'], section: 'pertahanan', action: () => { showSection('pertahanan'); setTimeout(()=>showDetail('defense-backup'),100); }},
+  { keywords: ['mfa','autentikasi','2fa'], section: 'pertahanan', action: () => { showSection('pertahanan'); setTimeout(()=>showDetail('defense-2fa'),100); }},
+];
+
+document.getElementById('searchInput').addEventListener('input', function() {
+  const q = this.value.toLowerCase().trim();
+  if (!q) return;
+  for (const item of allCards) {
+    if (item.keywords.some(k => k.includes(q) || q.includes(k))) {
+      item.action();
+      return;
+    }
+  }
+});
+</script>
+</body>
+</html>
